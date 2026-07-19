@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parinyawat Pannak — CV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B1120;
+    --panel: #121A2E;
+    --panel-2: #0F1830;
+    --line: #24304A;
+    --text: #E5E9F0;
+    --muted: #8B96AD;
+    --accent: #5EEAD4;
+    --accent-dim: #2DD4BF;
+    --warm: #FBBF24;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 600px at 85% -10%, rgba(94,234,212,0.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, rgba(251,191,36,0.06), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.55;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  .wrap{ max-width:1040px; margin:0 auto; padding:56px 28px 100px; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    gap:32px;
+    align-items:center;
+    padding-bottom:36px;
+    border-bottom:1px solid var(--line);
+  }
+  .avatar{
+    width:150px; height:150px; border-radius:50%;
+    background:linear-gradient(160deg, var(--panel-2), var(--panel));
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:44px; font-weight:700; color:var(--accent);
+    box-shadow:0 0 0 6px rgba(94,234,212,0.05), 0 0 40px rgba(94,234,212,0.08);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 10px;
+  }
+  .eyebrow::before{ content:"// "; color:var(--muted); }
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700; font-size:clamp(34px,5vw,52px);
+    line-height:1.04; margin:0 0 14px; letter-spacing:-0.01em;
+  }
+  .objective{ color:var(--muted); font-size:16px; max-width:56ch; margin:0; }
+  .objective b{ color:var(--text); font-weight:600; }
+
+  /* ---------- SECTION SHELL ---------- */
+  section.block{ padding:40px 0; border-bottom:1px solid var(--line); }
+  section.block:last-of-type{ border-bottom:none; }
+  .block-head{
+    display:flex; align-items:baseline; gap:12px; margin-bottom:22px;
+  }
+  .block-tag{
+    font-family:'JetBrains Mono', monospace; font-size:12px;
+    color:var(--panel); background:var(--accent);
+    padding:2px 8px; border-radius:3px; font-weight:700; letter-spacing:.03em;
+  }
+  h2{
+    font-family:'Space Grotesk', sans-serif; font-size:24px; font-weight:600;
+    margin:0; letter-spacing:-0.01em;
+  }
+
+  /* ---------- GRID LAYOUT FOR SIDE-BY-SIDE SECTIONS ---------- */
+  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:0 48px; }
+  @media (max-width:720px){ .cols{ grid-template-columns:1fr; } .hero{ grid-template-columns:1fr; text-align:center; } .avatar{ margin:0 auto; } }
+
+  /* ---------- CONTACT ---------- */
+  .contact-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:14px; }
+  .contact-list li{ display:flex; gap:12px; align-items:flex-start; color:var(--text); font-size:14.5px; }
+  .contact-list .ico{ color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:13px; flex:none; width:20px; }
+
+  /* ---------- WORK HISTORY ---------- */
+  .job{ margin-bottom:6px; }
+  .job-title{ font-weight:600; font-size:16.5px; }
+  .job-meta{ font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--muted); margin:2px 0 12px; }
+  ul.tasks{ margin:0; padding-left:18px; color:var(--text); font-size:14.5px; display:flex; flex-direction:column; gap:6px; }
+  ul.tasks li::marker{ color:var(--accent); }
+
+  /* ---------- SKILLS ---------- */
+  .skill-row{ display:flex; gap:14px; margin-bottom:16px; }
+  .skill-row:last-child{ margin-bottom:0; }
+  .skill-key{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--accent); flex:none; width:150px; padding-top:2px; }
+  .skill-val{ font-size:14.5px; color:var(--text); }
+  .pill-row{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+  .pill{
+    font-family:'JetBrains Mono', monospace; font-size:12px; padding:5px 10px;
+    border:1px solid var(--line); border-radius:20px; color:var(--muted);
+    background:var(--panel);
+  }
+
+  /* ---------- EDUCATION / REFERENCE / HOBBIES ---------- */
+  .edu-date{ font-family:'JetBrains Mono', monospace; color:var(--accent); font-size:12.5px; }
+  .edu-title{ font-weight:600; margin:4px 0 2px; }
+  .ref-item{ margin-bottom:16px; }
+  .ref-item:last-child{ margin-bottom:0; }
+  .ref-name{ font-weight:600; }
+  .ref-role{ color:var(--muted); font-size:13.5px; }
+  .hobby-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; font-size:14.5px; }
+  .hobby-list li::before{ content:"— "; color:var(--accent); }
+
+  /* ---------- ICG / SIGNATURE SECTION ---------- */
+  .icg{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:28px;
+    margin-top:6px;
+  }
+  .icg-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+  .icg-desc{ color:var(--muted); font-size:14.5px; max-width:52ch; }
+  .icg-desc code{ color:var(--accent); background:rgba(94,234,212,0.08); padding:1px 5px; border-radius:3px; }
+  .dot-row{ display:flex; gap:6px; margin-bottom:16px; }
+  .dot{ width:10px; height:10px; border-radius:50%; }
+  .dot.r{ background:#F87171; } .dot.y{ background:#FBBF24; } .dot.g{ background:#4ADE80; }
+  .stage{
+    background:#fff;
+    border-radius:8px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    display:flex; justify-content:center;
+    padding:14px;
+  }
+  #canvas{
+    image-rendering:pixelated;
+    border-radius:4px;
+    cursor:crosshair;
+  }
+  .hint{
+    font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--muted);
+    margin-top:14px; text-align:center;
+  }
+  .hint kbd{
+    font-family:'JetBrains Mono', monospace; background:var(--panel-2);
+    border:1px solid var(--line); border-radius:4px; padding:1px 6px; color:var(--accent);
+  }
+
+  footer{ text-align:center; color:var(--muted); font-family:'JetBrains Mono', monospace; font-size:12px; padding-top:40px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="avatar">PP</div>
+    <div>
+      <p class="eyebrow">software engineer / cs student</p>
+      <h1>Parinyawat<br>Pannak</h1>
+      <p class="objective"><b>Objective:</b> To obtain a full-time job in software engineering.</p>
+    </div>
+  </div>
+
+  <!-- CONTACT + WORK HISTORY -->
+  <section class="block">
+    <div class="cols">
+      <div>
+        <div class="block-head"><span class="block-tag">01</span><h2>Contact</h2></div>
+        <ul class="contact-list">
+          <li><span class="ico">mail</span> enbat18@hotmail.com</li>
+          <li><span class="ico">addr</span> 160/154 Soi 8, Iceland Village 2, Moo 10, Wat Sai Subdistrict, Mueang Nakhon Sawan District</li>
+          <li><span class="ico">tel</span> +66 082-539-8375</li>
+        </ul>
+
+        <div class="block-head" style="margin-top:36px;"><span class="block-tag">02</span><h2>Education</h2></div>
+        <div class="edu-date">Sep 2025 – Present</div>
+        <div class="edu-title">B.S. Computer Science</div>
+        <div style="color:var(--muted); font-size:14.5px;">Kasetsart University</div>
+
+        <div class="block-head" style="margin-top:36px;"><span class="block-tag">03</span><h2>Reference</h2></div>
+        <div class="ref-item">
+          <div class="ref-name">Kritsana Treechalong</div>
+          <div class="ref-role">Lecturer, Kasetsart University</div>
+        </div>
+        <div class="ref-item">
+          <div class="ref-name">Sasin Tiendee</div>
+          <div class="ref-role">Lecturer, Kasetsart University</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="block-head"><span class="block-tag">04</span><h2>Work History</h2></div>
+        <div class="job">
+          <div class="job-title">Google — Software Engineer</div>
+          <div class="job-meta">Bangkok, TH · 07/2026 – Current</div>
+          <ul class="tasks">
+            <li>Design, develop, and optimize software applications</li>
+            <li>Collaborate with cross-functional teams on large-scale projects</li>
+            <li>Implement and review code to ensure quality and efficiency</li>
+          </ul>
+        </div>
+
+        <div class="block-head" style="margin-top:36px;"><span class="block-tag">05</span><h2>Hobbies</h2></div>
+        <ul class="hobby-list">
+          <li>Running</li>
+          <li>Playing FPS and MOBA games</li>
+          <li>Listening to music</li>
+          <li>Watching movies</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="block">
+    <div class="block-head"><span class="block-tag">06</span><h2>Skills</h2></div>
+    <div class="skill-row">
+      <div class="skill-key">languages</div>
+      <div class="skill-val">
+        <div class="pill-row">
+          <span class="pill">Java</span>
+          <span class="pill">C</span>
+        </div>
+      </div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-key">computer literacy</div>
+      <div class="skill-val">Microsoft Office, Canva</div>
+    </div>
+    <div class="skill-row">
+      <div class="skill-key">working style</div>
+      <div class="skill-val">Responsible and self-motivated. Works well with others.</div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE COMPUTER GRAPHICS (signature section) -->
+  <section class="block" id="icg">
+    <div class="block-head"><span class="block-tag">07</span><h2>Interactive Computer Graphics</h2></div>
+
+    <div class="icg">
+      <div class="icg-top">
+        <div>
+          <div class="dot-row"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+          <div class="mono" style="font-size:13px; color:var(--accent); margin-bottom:6px;">raster_graphics.html</div>
+          <p class="icg-desc">
+            Hand-written raster renderer: a custom framebuffer with <code>putPixel</code>, 24-bit color sprites,
+            and a <code>Translate / Rotate / Scale</code> pipeline built from scratch (no canvas draw calls for the sprites themselves).
+          </p>
+        </div>
+      </div>
+
+      <div class="stage">
+        <canvas id="canvas" width="200" height="200" style="width:400px; height:400px;"></canvas>
+      </div>
+      <p class="hint">move your mouse over the canvas — the monkey follows · hold <kbd>↑</kbd> to grow, <kbd>↓</kbd> to shrink</p>
+    </div>
+  </section>
+
+  <footer>built &amp; rendered pixel by pixel — Parinyawat Pannak, 2026</footer>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const imageData = ctx.createImageData(canvas.width, canvas.height);
+const pixels = imageData.data;
+
+function putPixel(x, y, r, g, b, a = 255) {
+  if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) return;
+  const idx = (y * canvas.width + x) * 4;
+  pixels[idx] = r; pixels[idx+1] = g; pixels[idx+2] = b; pixels[idx+3] = a;
+}
+function drawRectFilled(x1,y1,x2,y2,r,g,b,a=255){
+  for (let y=y1;y<=y2;y++) for (let x=x1;x<=x2;x++) putPixel(x,y,r,g,b,a);
+}
+function drawEllipse(cx, cy, rx, ry, r, g, b, a = 255) {
+  rx = Math.max(1, rx); ry = Math.max(1, ry);
+  for (let y=-ry;y<=ry;y++) for (let x=-rx;x<=rx;x++)
+    if ((x*x)/(rx*rx)+(y*y)/(ry*ry) <= 1) putPixel(cx+x, cy+y, r, g, b, a);
+}
+function drawSprite24BitRotateScale(sprite, x, y, degree, scaleX, scaleY, a = 255) {
+  const rad = degree * Math.PI / 180;
+  const centerX = sprite[0].length / 2;
+  const centerY = sprite.length / 2;
+  for (let j=0;j<sprite.length;j++){
+    for (let i=0;i<sprite[j].length;i++){
+      const color = sprite[j][i];
+      if (color !== null) {
+        const r=(color>>16)&255, g=(color>>8)&255, b=color&255;
+        const cX = i - centerX, cY = j - centerY;
+        const sX = cX * scaleX, sY = cY * scaleY;
+        const x_rot = Math.round(x + sX*Math.cos(rad) - sY*Math.sin(rad));
+        const y_rot = Math.round(y + sX*Math.sin(rad) + sY*Math.cos(rad));
+        drawEllipse(x_rot, y_rot, Math.max(1,Math.round(scaleX)), Math.max(1,Math.round(scaleY)), r, g, b, a);
+      }
+    }
+  }
+}
+
+const smileSprite24Bit = [
+  [null,null,0xB45309,0xD97706,0xD97706,0xB45309,null,null],
+  [null,0xD97706,0xFDE047,0xFEF08A,0xFEF08A,0xFDE047,0xD97706,null],
+  [0xB45309,0xFDE047,0x111827,0xFDE047,0xFDE047,0x111827,0xFDE047,0xB45309],
+  [0xD97706,0xFEF08A,0x111827,0xFEF08A,0xFEF08A,0x111827,0xFEF08A,0xD97706],
+  [0xD97706,0xFDE047,0xFDE047,0xFDE047,0xFDE047,0xFDE047,0xFDE047,0xD97706],
+  [0xB45309,0xFDE047,0x111827,0xFDE047,0xFDE047,0x111827,0xFDE047,0xB45309],
+  [null,0xD97706,0xFDE047,0x111827,0x111827,0xFDE047,0xD97706,null],
+  [null,null,0xB45309,0xD97706,0xD97706,0xB45309,null,null],
+];
+
+const W = null;
+const CREAM=0xF6E7C6, CREAM2=0xFBF2DE, GOLD=0xC98A2E, LEAF=0x7CB342;
+const sheepCookieSprite = [
+  [W,W,W,LEAF,GOLD,W,W,W,W,W,GOLD,LEAF,W,W,W,W],
+  [W,W,LEAF,LEAF,GOLD,W,W,W,W,W,GOLD,LEAF,LEAF,W,W,W],
+  [W,W,GOLD,GOLD,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,GOLD,GOLD,W,W,W],
+  [W,GOLD,CREAM,CREAM2,CREAM,CREAM,CREAM2,CREAM,CREAM,CREAM2,CREAM,CREAM,CREAM,GOLD,W,W],
+  [GOLD,CREAM,CREAM2,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM2,CREAM,GOLD,W],
+  [GOLD,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,GOLD,W],
+  [W,GOLD,CREAM,CREAM,GOLD,GOLD,GOLD,GOLD,GOLD,GOLD,GOLD,GOLD,CREAM,GOLD,W,W],
+  [W,W,GOLD,0xF4C77B,0x3B2412,0xF4C77B,0xF4C77B,W,W,0xF4C77B,0xF4C77B,0x3B2412,0xF4C77B,GOLD,W,W],
+  [W,W,GOLD,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,W,W,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,GOLD,W,W],
+  [W,W,W,GOLD,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,GOLD,W,W,W],
+  [W,W,W,GOLD,0xE8935B,0xE8935B,0xC98A2E,0xF4C77B,0xF4C77B,0xC98A2E,0xE8935B,GOLD,W,W,W,W],
+  [W,W,W,W,GOLD,0xE8935B,0xE8935B,0xE8935B,0xE8935B,0xE8935B,GOLD,W,W,W,W,W],
+  [W,W,0x8BC34A,GOLD,W,GOLD,0xE8935B,0xE8935B,0xE8935B,GOLD,W,GOLD,0xE8935B,W,W,W],
+  [W,0x8BC34A,0x8BC34A,GOLD,W,W,GOLD,GOLD,GOLD,W,W,GOLD,0xE8935B,0xC98A2E,W,W],
+  [0x8BC34A,0x8BC34A,GOLD,W,W,W,W,W,W,W,W,W,GOLD,0xC98A2E,W,W],
+  [W,GOLD,W,W,W,W,W,W,W,W,W,W,W,GOLD,W,W],
+];
+
+const DARK_FUR=0x6B4226, FUR=0x9C6B3E, FACE=0xF6D9B0, FACE_LT=0xFCE9CC, EAR_PINK=0xF4A6BA,
+      EYE=0x1A1A1A, NOSE=0x4A2E1A, BOW=0xE63946, BOW_DK=0xB22C39, BANANA=0xFCD34D, BANANA_DK=0xB45309;
+const monkeySprite24Bit = [
+  [W,W,DARK_FUR,DARK_FUR,W,W,W,W,W,W,W,W,DARK_FUR,DARK_FUR,W,W],
+  [W,DARK_FUR,FUR,FUR,DARK_FUR,W,W,W,W,W,W,DARK_FUR,FUR,FUR,DARK_FUR,W],
+  [W,DARK_FUR,FACE,FACE,DARK_FUR,W,W,W,W,W,W,DARK_FUR,FACE,FACE,DARK_FUR,W],
+  [DARK_FUR,FUR,EAR_PINK,FACE,FUR,DARK_FUR,DARK_FUR,DARK_FUR,DARK_FUR,DARK_FUR,DARK_FUR,FUR,FACE,EAR_PINK,FUR,DARK_FUR],
+  [DARK_FUR,FUR,FUR,FUR,FUR,FACE,FACE,FACE,FACE,FACE,FACE,FUR,FUR,FUR,FUR,DARK_FUR],
+  [W,DARK_FUR,FUR,FUR,FACE,FACE,FACE_LT,FACE,FACE,FACE_LT,FACE,FACE,FUR,FUR,DARK_FUR,W],
+  [W,W,DARK_FUR,FACE,FACE,EYE,FACE,FACE,FACE,FACE,EYE,FACE,FACE,DARK_FUR,W,W],
+  [W,W,FUR,FACE,FACE,FACE,FACE,NOSE,NOSE,FACE,FACE,FACE,FACE,FUR,W,W],
+  [W,W,FUR,FACE,FACE,FACE_LT,FACE,FACE,FACE,FACE,FACE_LT,FACE,FACE,FUR,W,W],
+  [W,W,DARK_FUR,FACE,FACE,FACE,FACE,FACE,FACE,FACE,FACE,FACE,FACE,DARK_FUR,W,W],
+  [W,W,W,DARK_FUR,BOW_DK,BOW,DARK_FUR,FUR,FUR,DARK_FUR,BOW,BOW_DK,DARK_FUR,W,W,W],
+  [W,W,W,FUR,FUR,BOW,BOW,BOW_DK,BOW_DK,BOW,BOW,FUR,FUR,W,W,W],
+  [W,W,DARK_FUR,FUR,FUR,FUR,DARK_FUR,W,W,DARK_FUR,FUR,FUR,FUR,DARK_FUR,W,W],
+  [W,DARK_FUR,FUR,FUR,BANANA_DK,BANANA,BANANA,BANANA,BANANA,BANANA,BANANA,FUR,FUR,DARK_FUR,W,W],
+  [W,DARK_FUR,FUR,W,W,BANANA,BANANA,BANANA,BANANA,BANANA,W,W,FUR,DARK_FUR,W,W],
+  [W,W,DARK_FUR,W,W,W,DARK_FUR,DARK_FUR,DARK_FUR,DARK_FUR,W,W,W,DARK_FUR,W,W],
+];
+
+const CHIBI_TEMPLATE = [
+  [0,0,0,2,2,0,0,0,0,2,2,0,0,0],
+  [0,0,2,2,2,2,0,0,2,2,2,2,0,0],
+  [0,0,2,1,1,2,0,0,2,1,1,2,0,0],
+  [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+  [1,1,3,1,1,1,1,1,1,1,1,3,1,1],
+  [1,3,1,1,4,1,1,1,1,4,1,1,3,1],
+  [1,1,1,1,4,1,1,1,1,4,1,1,1,1],
+  [1,5,1,1,1,1,6,6,1,1,1,1,5,1],
+  [1,1,1,1,1,1,6,6,1,1,1,1,1,1],
+  [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
+  [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
+  [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
+  [0,0,0,0,1,1,1,1,1,1,0,0,0,0],
+  [0,0,0,0,0,1,1,1,1,0,0,0,0,0],
+];
+function buildChibiSprite(c){ return CHIBI_TEMPLATE.map(row => row.map(v => v===0?null:c[v])); }
+const chibiCatSprite    = buildChibiSprite({1:0xFFB870,2:0xFF8C42,3:0xFFE7C2,4:0x2B2B2B,5:0xFF9EB5,6:0xFFFFFF});
+const chibiBearSprite   = buildChibiSprite({1:0x8B5E3C,2:0x6B4226,3:0xD9A066,4:0x1A1A1A,5:0xF4A6BA,6:0x3E2A1A});
+const chibiBunnySprite  = buildChibiSprite({1:0xFFFFFF,2:0xFFD1DC,3:0xF5F5F5,4:0xB03060,5:0xFFB6C1,6:0xFF69B4});
+const chibiPandaSprite  = buildChibiSprite({1:0xFFFFFF,2:0x1A1A1A,3:0xF5F5F5,4:0x1A1A1A,5:0xFFB6C1,6:0x1A1A1A});
+const chibiFoxSprite    = buildChibiSprite({1:0xE8703A,2:0xC65A2E,3:0xFFF3E0,4:0x1A1A1A,5:0xFF9E80,6:0x1A1A1A});
+const chibiDinoSprite   = buildChibiSprite({1:0x6ABF69,2:0x4C9950,3:0xB6E6A8,4:0x1A1A1A,5:0xA8E063,6:0xFFD54F});
+const chibiPenguinSprite= buildChibiSprite({1:0x2C3E50,2:0xFFFFFF,3:0x4A6278,4:0x1A1A1A,5:0xFF9EB5,6:0xFFA726});
+const chibiUnicornSprite= buildChibiSprite({1:0xF6F0FB,2:0xC084FC,3:0xFFFFFF,4:0x1A1A1A,5:0xFFB6C1,6:0xFCD34D});
+
+let degree = 0;
+const rotateSpeed = 1.2;
+let scale = 1, targetScale = 1;
+const minScale = 0.2, maxScale = 5, scaleStep = 0.05;
+let upPressed = false, downPressed = false;
+let mouseX = 100, mouseY = 100;
+
+function toScaledMousePos(posX, posY) {
+  const rect = canvas.getBoundingClientRect();
+  const sx = canvas.width / rect.width, sy = canvas.height / rect.height;
+  return { x: Math.floor((posX - rect.left) * sx), y: Math.floor((posY - rect.top) * sy) };
+}
+canvas.addEventListener('mousemove', (e) => {
+  const { x, y } = toScaledMousePos(e.clientX, e.clientY);
+  mouseX = x; mouseY = y;
+});
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowUp') { upPressed = true; e.preventDefault(); }
+  if (e.key === 'ArrowDown') { downPressed = true; e.preventDefault(); }
+});
+window.addEventListener('keyup', (e) => {
+  if (e.key === 'ArrowUp') upPressed = false;
+  if (e.key === 'ArrowDown') downPressed = false;
+});
+
+const chibiCast = [
+  { sprite: smileSprite24Bit,    x:100, y:16,  rotSpeed:2.0,  pulseSpeed:0.08,  degree:0, pulse:0.0 },
+  { sprite: sheepCookieSprite,   x:100, y:183, rotSpeed:0.7,  pulseSpeed:0.05,  degree:0, pulse:1.0 },
+  { sprite: chibiCatSprite,      x:20,  y:20,  rotSpeed:1.5,  pulseSpeed:0.07,  degree:0, pulse:2.0 },
+  { sprite: chibiBearSprite,     x:180, y:20,  rotSpeed:-1.2, pulseSpeed:0.06,  degree:0, pulse:3.0 },
+  { sprite: chibiBunnySprite,    x:14,  y:100, rotSpeed:1.8,  pulseSpeed:0.09,  degree:0, pulse:4.0 },
+  { sprite: chibiPandaSprite,    x:186, y:100, rotSpeed:-1.6, pulseSpeed:0.055, degree:0, pulse:5.0 },
+  { sprite: chibiFoxSprite,      x:20,  y:180, rotSpeed:1.3,  pulseSpeed:0.075, degree:0, pulse:6.0 },
+  { sprite: chibiDinoSprite,     x:180, y:180, rotSpeed:-1.4, pulseSpeed:0.065, degree:0, pulse:7.0 },
+  { sprite: chibiPenguinSprite,  x:55,  y:60,  rotSpeed:1.0,  pulseSpeed:0.045, degree:0, pulse:8.0 },
+  { sprite: chibiUnicornSprite,  x:145, y:140, rotSpeed:-1.0, pulseSpeed:0.05,  degree:0, pulse:9.0 },
+];
+
+function animate() {
+  drawRectFilled(0, 0, canvas.width - 1, canvas.height - 1, 255, 255, 255);
+  degree = (degree + rotateSpeed) % 360;
+  if (upPressed) targetScale = Math.min(maxScale, targetScale + scaleStep);
+  if (downPressed) targetScale = Math.max(minScale, targetScale - scaleStep);
+  scale += (targetScale - scale) * 0.2;
+
+  for (const c of chibiCast) {
+    c.degree = (c.degree + c.rotSpeed) % 360;
+    c.pulse += c.pulseSpeed;
+    const s = 1 + 0.18 * Math.sin(c.pulse);
+    drawSprite24BitRotateScale(c.sprite, c.x, c.y, c.degree, s, s);
+  }
+  drawSprite24BitRotateScale(monkeySprite24Bit, mouseX, mouseY, degree, scale, scale);
+
+  ctx.putImageData(imageData, 0, 0);
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
