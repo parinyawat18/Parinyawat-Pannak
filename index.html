@@ -8,23 +8,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #0B1120;
-    --panel: #121A2E;
-    --panel-2: #0F1830;
-    --line: #24304A;
-    --text: #E5E9F0;
-    --muted: #8B96AD;
-    --accent: #5EEAD4;
-    --accent-dim: #2DD4BF;
-    --warm: #FBBF24;
+    --bg: #FBF3E3;
+    --panel: #FFFDF7;
+    --panel-2: #F6E9D3;
+    --line: #E4D2AE;
+    --text: #4A3A26;
+    --muted: #8A7A5F;
+    --accent: #C98A2E;
+    --accent-dim: #B47A24;
+    --warm: #D97706;
   }
   *{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
   body{
     margin:0;
     background:
-      radial-gradient(1100px 600px at 85% -10%, rgba(94,234,212,0.10), transparent 60%),
-      radial-gradient(900px 500px at -10% 20%, rgba(251,191,36,0.06), transparent 55%),
+      radial-gradient(1100px 600px at 85% -10%, rgba(201,138,46,0.08), transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, rgba(217,119,6,0.06), transparent 55%),
       var(--bg);
     color:var(--text);
     font-family:'Inter', sans-serif;
@@ -35,21 +35,8 @@
 
   /* ---------- HERO ---------- */
   .hero{
-    display:grid;
-    grid-template-columns:150px 1fr;
-    gap:32px;
-    align-items:center;
     padding-bottom:36px;
     border-bottom:1px solid var(--line);
-  }
-  .avatar{
-    width:150px; height:150px; border-radius:50%;
-    background:linear-gradient(160deg, var(--panel-2), var(--panel));
-    border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Space Grotesk', sans-serif;
-    font-size:44px; font-weight:700; color:var(--accent);
-    box-shadow:0 0 0 6px rgba(94,234,212,0.05), 0 0 40px rgba(94,234,212,0.08);
   }
   .eyebrow{
     font-family:'JetBrains Mono', monospace;
@@ -83,7 +70,7 @@
 
   /* ---------- GRID LAYOUT FOR SIDE-BY-SIDE SECTIONS ---------- */
   .cols{ display:grid; grid-template-columns:1fr 1fr; gap:0 48px; }
-  @media (max-width:720px){ .cols{ grid-template-columns:1fr; } .hero{ grid-template-columns:1fr; text-align:center; } .avatar{ margin:0 auto; } }
+  @media (max-width:720px){ .cols{ grid-template-columns:1fr; } .hero{ text-align:center; } }
 
   /* ---------- CONTACT ---------- */
   .contact-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:14px; }
@@ -164,7 +151,6 @@
 
   <!-- HERO -->
   <div class="hero">
-    <div class="avatar">PP</div>
     <div>
       <p class="eyebrow">software engineer / cs student</p>
       <h1>Parinyawat<br>Pannak</h1>
@@ -180,7 +166,6 @@
         <ul class="contact-list">
           <li><span class="ico">mail</span> enbat18@hotmail.com</li>
           <li><span class="ico">addr</span> 160/154 Soi 8, Iceland Village 2, Moo 10, Wat Sai Subdistrict, Mueang Nakhon Sawan District</li>
-          <li><span class="ico">tel</span> +66 082-539-8375</li>
         </ul>
 
         <div class="block-head" style="margin-top:36px;"><span class="block-tag">02</span><h2>Education</h2></div>
@@ -263,7 +248,7 @@
       <div class="stage">
         <canvas id="canvas" width="200" height="200" style="width:400px; height:400px;"></canvas>
       </div>
-      <p class="hint">move your mouse over the canvas — the monkey follows · hold <kbd>↑</kbd> to grow, <kbd>↓</kbd> to shrink</p>
+      <p class="hint">hold <kbd>←</kbd> / <kbd>→</kbd> to spin the monkey · hold <kbd>↑</kbd> to grow, <kbd>↓</kbd> to shrink</p>
     </div>
   </section>
 
@@ -289,6 +274,24 @@ function drawEllipse(cx, cy, rx, ry, r, g, b, a = 255) {
   for (let y=-ry;y<=ry;y++) for (let x=-rx;x<=rx;x++)
     if ((x*x)/(rx*rx)+(y*y)/(ry*ry) <= 1) putPixel(cx+x, cy+y, r, g, b, a);
 }
+// สไปรท์สีเดียว (1-bit mask) หมุน + scale แยกแกน X/Y — มาจาก raster_graphics.html ต้นฉบับ
+function drawSpriteRotateScale(sprite, x, y, degree, scaleX, scaleY, r, g, b, a = 255) {
+  const rad = degree * Math.PI / 180;
+  const centerX = sprite[0].length / 2;
+  const centerY = sprite.length / 2;
+  for (let j = 0; j < sprite.length; j++) {
+    for (let i = 0; i < sprite[j].length; i++) {
+      if (sprite[j][i] === 1) {
+        const cX = i - centerX;
+        const cY = j - centerY;
+        const x_rot = Math.round(x + (cX * Math.cos(rad) - cY * Math.sin(rad)) * scaleX);
+        const y_rot = Math.round(y + (cX * Math.sin(rad) + cY * Math.cos(rad)) * scaleY);
+        drawEllipse(x_rot, y_rot, Math.max(1, Math.round(scaleX)), Math.max(1, Math.round(scaleY)), r, g, b, a);
+      }
+    }
+  }
+}
+
 function drawSprite24BitRotateScale(sprite, x, y, degree, scaleX, scaleY, a = 255) {
   const rad = degree * Math.PI / 180;
   const centerX = sprite[0].length / 2;
@@ -307,6 +310,25 @@ function drawSprite24BitRotateScale(sprite, x, y, degree, scaleX, scaleY, a = 25
     }
   }
 }
+
+const spaceInvaderSprite = [
+  [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
+  [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+  [0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0],
+  [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+  [0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0],
+  [0,0,1,1,1,0,1,0,0,1,0,1,1,1,0,0],
+  [0,0,1,1,1,0,0,1,1,0,0,1,1,1,0,0],
+  [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+  [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
+  [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
+  [0,0,0,1,1,1,0,1,1,0,1,1,1,0,0,0],
+  [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
+  [0,0,1,1,0,1,1,1,1,1,1,0,1,1,0,0],
+  [0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0],
+  [0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0],
+  [1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1],
+];
 
 const smileSprite24Bit = [
   [null,null,0xB45309,0xD97706,0xD97706,0xB45309,null,null],
@@ -392,7 +414,9 @@ const rotateSpeed = 1.2;
 let scale = 1, targetScale = 1;
 const minScale = 0.2, maxScale = 5, scaleStep = 0.05;
 let upPressed = false, downPressed = false;
+let leftPressed = false, rightPressed = false;
 let mouseX = 100, mouseY = 100;
+const monkeyX = 100, monkeyY = 130; // ลิงอยู่นิ่งตำแหน่งเดิมเสมอ ไม่วิ่งตามเมาส์ หมุนได้ด้วยปุ่ม ←/→ เท่านั้น
 
 function toScaledMousePos(posX, posY) {
   const rect = canvas.getBoundingClientRect();
@@ -406,11 +430,19 @@ canvas.addEventListener('mousemove', (e) => {
 window.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowUp') { upPressed = true; e.preventDefault(); }
   if (e.key === 'ArrowDown') { downPressed = true; e.preventDefault(); }
+  if (e.key === 'ArrowLeft') { leftPressed = true; e.preventDefault(); }
+  if (e.key === 'ArrowRight') { rightPressed = true; e.preventDefault(); }
 });
 window.addEventListener('keyup', (e) => {
   if (e.key === 'ArrowUp') upPressed = false;
   if (e.key === 'ArrowDown') downPressed = false;
+  if (e.key === 'ArrowLeft') leftPressed = false;
+  if (e.key === 'ArrowRight') rightPressed = false;
 });
+
+let invaderDegree = 0;
+const invaderRotSpeed = 1;
+let invaderPulse = 0;
 
 const chibiCast = [
   { sprite: smileSprite24Bit,    x:100, y:16,  rotSpeed:2.0,  pulseSpeed:0.08,  degree:0, pulse:0.0 },
@@ -427,7 +459,9 @@ const chibiCast = [
 
 function animate() {
   drawRectFilled(0, 0, canvas.width - 1, canvas.height - 1, 255, 255, 255);
-  degree = (degree + rotateSpeed) % 360;
+  if (leftPressed) degree -= rotateSpeed;
+  if (rightPressed) degree += rotateSpeed;
+  degree = ((degree % 360) + 360) % 360;
   if (upPressed) targetScale = Math.min(maxScale, targetScale + scaleStep);
   if (downPressed) targetScale = Math.max(minScale, targetScale - scaleStep);
   scale += (targetScale - scale) * 0.2;
@@ -438,7 +472,13 @@ function animate() {
     const s = 1 + 0.18 * Math.sin(c.pulse);
     drawSprite24BitRotateScale(c.sprite, c.x, c.y, c.degree, s, s);
   }
-  drawSprite24BitRotateScale(monkeySprite24Bit, mouseX, mouseY, degree, scale, scale);
+  drawSprite24BitRotateScale(monkeySprite24Bit, monkeyX, monkeyY, degree, scale, scale);
+
+  // เอเลี่ยน 1-bit mask หมุนเองอัตโนมัติ + เต้นขนาดเบาๆ (สีทองเข้ากับธีมครีม)
+  invaderDegree = (invaderDegree + invaderRotSpeed) % 360;
+  invaderPulse += 0.05;
+  const invaderScale = 0.8 + 0.15 * Math.sin(invaderPulse);
+  drawSpriteRotateScale(spaceInvaderSprite, 100, 100, invaderDegree, invaderScale, invaderScale, 201, 138, 46);
 
   ctx.putImageData(imageData, 0, 0);
   requestAnimationFrame(animate);
