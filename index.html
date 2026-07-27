@@ -143,6 +143,58 @@
   }
 
   footer{ text-align:center; color:var(--muted); font-family:'JetBrains Mono', monospace; font-size:12px; padding-top:40px; }
+
+  /* ---------- MINI PAINT (matches .icg theme) ---------- */
+  #paint-toolbar{
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    background:var(--panel-2); border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; margin-bottom:16px;
+  }
+  .p-group{ display:flex; align-items:center; gap:6px; padding-right:14px; border-right:1px solid var(--line); }
+  .p-group:last-child{ border-right:none; padding-right:0; }
+  .p-group-label{
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted);
+    margin-right:4px; text-transform:uppercase; letter-spacing:.05em;
+  }
+  .p-tool-btn{
+    width:38px; height:38px; border:1px solid var(--line); background:var(--panel);
+    cursor:pointer; font-size:16px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+  }
+  .p-tool-btn:hover{ transform:translateY(-2px); box-shadow:0 4px 10px rgba(74,58,38,0.15); }
+  .p-tool-btn.active{ background:var(--accent); border-color:var(--accent-dim); box-shadow:0 4px 10px rgba(201,138,46,0.35); }
+  .p-color-btn{
+    width:26px; height:26px; border:2px solid var(--panel); border-radius:50%; cursor:pointer;
+    padding:0; box-shadow:0 0 0 1px var(--line), 0 1px 3px rgba(74,58,38,0.15);
+    transition:transform .12s ease;
+  }
+  .p-color-btn:hover{ transform:scale(1.12); }
+  .p-color-btn.active{ box-shadow:0 0 0 2px var(--text), 0 2px 6px rgba(74,58,38,0.3); transform:scale(1.15); }
+  .p-control{ display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); }
+  #p-thickness{ accent-color:var(--accent); }
+  #p-thicknessValue{ width:20px; display:inline-block; text-align:right; font-weight:600; color:var(--accent); font-family:'JetBrains Mono', monospace; }
+  #paint-canvas-wrap{
+    background:
+      linear-gradient(45deg, var(--panel-2) 25%, transparent 25%),
+      linear-gradient(-45deg, var(--panel-2) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, var(--panel-2) 75%),
+      linear-gradient(-45deg, transparent 75%, var(--panel-2) 75%);
+    background-size:16px 16px;
+    background-position:0 0, 0 8px, 8px -8px, -8px 0px;
+    display:flex; justify-content:center;
+    border:1px solid var(--line); border-radius:8px; overflow:hidden; padding:14px;
+  }
+  #paintCanvas{ display:block; cursor:crosshair; background:#fff; border-radius:4px; }
+  #paint-actions{ margin-top:14px; display:flex; gap:10px; }
+  #paint-actions button{
+    padding:8px 14px; cursor:pointer; border:1px solid var(--line); border-radius:8px;
+    font-size:12.5px; font-weight:600; font-family:'JetBrains Mono', monospace;
+    transition:transform .12s ease;
+  }
+  #paint-actions button:hover{ transform:translateY(-1px); }
+  #p-clearBtn{ background:var(--panel); color:var(--muted); }
+  #p-saveBtn{ background:var(--accent); color:var(--panel); border-color:var(--accent-dim); }
 </style>
 </head>
 <body>
@@ -154,7 +206,7 @@
     <div>
       <p class="eyebrow">software engineer / cs student</p>
       <h1>Parinyawat<br>Pannak</h1>
-      <p class="objective"><b>Objective:</b> To obtain a full-time job in software engineering.</p>
+      <p class="objective"><b>Objective:</b> To obtain a full-time job in software engineering or Data Scientist.</p>
     </div>
   </div>
 
@@ -164,8 +216,8 @@
       <div>
         <div class="block-head"><span class="block-tag">01</span><h2>Contact</h2></div>
         <ul class="contact-list">
-          <li><span class="ico">mail</span> enbat18@hotmail.com</li>
-          <li><span class="ico">addr</span> 160/154 Soi 8, Iceland Village 2, Moo 10, Wat Sai Subdistrict, Mueang Nakhon Sawan District</li>
+          <li><span class="ico">mail</span> parinyawat.p@ku.th</li>
+          <li><span class="ico">addr</span> -</li>
         </ul>
 
         <div class="block-head" style="margin-top:36px;"><span class="block-tag">02</span><h2>Education</h2></div>
@@ -187,13 +239,7 @@
       <div>
         <div class="block-head"><span class="block-tag">04</span><h2>Work History</h2></div>
         <div class="job">
-          <div class="job-title">Google — Software Engineer</div>
-          <div class="job-meta">Bangkok, TH · 07/2026 – Current</div>
-          <ul class="tasks">
-            <li>Design, develop, and optimize software applications</li>
-            <li>Collaborate with cross-functional teams on large-scale projects</li>
-            <li>Implement and review code to ensure quality and efficiency</li>
-          </ul>
+          <div class="job-title">-</div>
         </div>
 
         <div class="block-head" style="margin-top:36px;"><span class="block-tag">05</span><h2>Hobbies</h2></div>
@@ -202,6 +248,7 @@
           <li>Playing FPS and MOBA games</li>
           <li>Listening to music</li>
           <li>Watching movies</li>
+          <li>Swimming</li>
         </ul>
       </div>
     </div>
@@ -216,6 +263,9 @@
         <div class="pill-row">
           <span class="pill">Java</span>
           <span class="pill">C</span>
+          <span class="pill">HTML</span>
+          <span class="pill">Python</span>
+          <span class="pill">Assembly</span>
         </div>
       </div>
     </div>
@@ -249,6 +299,61 @@
         <canvas id="canvas" width="200" height="200" style="width:400px; height:400px;"></canvas>
       </div>
       <p class="hint">hold <kbd>←</kbd> / <kbd>→</kbd> to spin the monkey · hold <kbd>↑</kbd> to grow, <kbd>↓</kbd> to shrink</p>
+    </div>
+  </section>
+
+  <!-- MINI PAINT (extra work, same theme) -->
+  <section class="block" id="paint">
+    <div class="block-head"><span class="block-tag">08</span><h2>Mini Paint</h2></div>
+
+    <div class="icg">
+      <div class="icg-top">
+        <div>
+          <div class="dot-row"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
+          <div class="mono" style="font-size:13px; color:var(--accent); margin-bottom:6px;">my_paint.html</div>
+          <p class="icg-desc">
+            A tiny raster-based paint program: pencil, line, rectangle, ellipse and eraser tools,
+            each with adjustable color and stroke thickness, drawn pixel-by-pixel onto a manual framebuffer.
+          </p>
+        </div>
+      </div>
+
+      <div id="paint-toolbar">
+        <div class="p-group">
+          <span class="p-group-label">เครื่องมือ</span>
+          <button class="p-tool-btn active" data-ptool="pencil" title="ดินสอ">✏️</button>
+          <button class="p-tool-btn" data-ptool="line" title="เส้น">📏</button>
+          <button class="p-tool-btn" data-ptool="rect" title="สี่เหลี่ยม">▭</button>
+          <button class="p-tool-btn" data-ptool="ellipse" title="วงรี">⬭</button>
+          <button class="p-tool-btn" data-ptool="eraser" title="ยางลบ">🧹</button>
+        </div>
+
+        <div class="p-group">
+          <span class="p-group-label">สี</span>
+          <button class="p-color-btn active" data-pcolor="#DC2626" style="background:#DC2626" title="แดง"></button>
+          <button class="p-color-btn" data-pcolor="#D97706" style="background:#D97706" title="ส้ม"></button>
+          <button class="p-color-btn" data-pcolor="#EAB308" style="background:#EAB308" title="เหลือง"></button>
+          <button class="p-color-btn" data-pcolor="#65A30D" style="background:#65A30D" title="เขียว"></button>
+          <button class="p-color-btn" data-pcolor="#2563EB" style="background:#2563EB" title="น้ำเงิน"></button>
+          <button class="p-color-btn" data-pcolor="#4338CA" style="background:#4338CA" title="คราม"></button>
+          <button class="p-color-btn" data-pcolor="#7E22CE" style="background:#7E22CE" title="ม่วง"></button>
+        </div>
+
+        <div class="p-group" style="border-right:none;">
+          <span class="p-group-label">ความหนา</span>
+          <input type="range" id="p-thickness" min="1" max="30" value="4">
+          <span id="p-thicknessValue">4</span>
+        </div>
+      </div>
+
+      <div id="paint-canvas-wrap">
+        <canvas id="paintCanvas" width="600" height="400"></canvas>
+      </div>
+
+      <div id="paint-actions">
+        <button id="p-clearBtn">ล้างทั้งหมด</button>
+        <button id="p-saveBtn">บันทึกเป็น PNG</button>
+      </div>
     </div>
   </section>
 
@@ -484,6 +589,189 @@ function animate() {
   requestAnimationFrame(animate);
 }
 animate();
+</script>
+
+<!-- Mini Paint script, isolated in its own IIFE so it never collides with the raster demo above -->
+<script>
+(function(){
+  const canvas = document.getElementById('paintCanvas');
+  const ctx = canvas.getContext('2d');
+  const imageData = ctx.createImageData(canvas.width, canvas.height);
+  const pixels = imageData.data;
+
+  function fillBackground(r, g, b) {
+    for (let i = 0; i < pixels.length; i += 4) {
+      pixels[i] = r; pixels[i + 1] = g; pixels[i + 2] = b; pixels[i + 3] = 255;
+    }
+  }
+  fillBackground(255, 255, 255);
+  ctx.putImageData(imageData, 0, 0);
+
+  function putPixel(x, y, r, g, b, a = 255) {
+    x = Math.round(x); y = Math.round(y);
+    if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) return;
+    const idx = (y * canvas.width + x) * 4;
+    pixels[idx] = r; pixels[idx + 1] = g; pixels[idx + 2] = b; pixels[idx + 3] = a;
+  }
+
+  function linePoints(x0, y0, x1, y1) {
+    x0 = Math.round(x0); y0 = Math.round(y0);
+    x1 = Math.round(x1); y1 = Math.round(y1);
+    const points = [];
+    const dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+    const dy = -Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+    let err = dx + dy;
+    while (true) {
+      points.push({ x: x0, y: y0 });
+      if (x0 === x1 && y0 === y1) break;
+      const e2 = 2 * err;
+      if (e2 >= dy) { err += dy; x0 += sx; }
+      if (e2 <= dx) { err += dx; y0 += sy; }
+    }
+    return points;
+  }
+
+  function stampBrush(cx, cy, r, g, b, thickness) {
+    const radius = Math.max(0, Math.floor(thickness / 2));
+    if (radius === 0) { putPixel(cx, cy, r, g, b); return; }
+    const rr = radius * radius + radius;
+    for (let y = -radius; y <= radius; y++) {
+      for (let x = -radius; x <= radius; x++) {
+        if (x * x + y * y <= rr) putPixel(cx + x, cy + y, r, g, b);
+      }
+    }
+  }
+
+  function drawThickLine(x1, y1, x2, y2, r, g, b, thickness) {
+    const pts = linePoints(x1, y1, x2, y2);
+    for (const p of pts) stampBrush(p.x, p.y, r, g, b, thickness);
+  }
+
+  function drawThickRectOutline(x1, y1, x2, y2, r, g, b, thickness) {
+    drawThickLine(x1, y1, x2, y1, r, g, b, thickness);
+    drawThickLine(x2, y1, x2, y2, r, g, b, thickness);
+    drawThickLine(x2, y2, x1, y2, r, g, b, thickness);
+    drawThickLine(x1, y2, x1, y1, r, g, b, thickness);
+  }
+
+  function drawThickEllipseOutline(cx, cy, rx, ry, r, g, b, thickness) {
+    rx = Math.abs(rx); ry = Math.abs(ry);
+    const steps = Math.max(36, Math.floor((rx + ry) * 4));
+    for (let i = 0; i <= steps; i++) {
+      const theta = (i / steps) * Math.PI * 2;
+      const x = cx + rx * Math.cos(theta);
+      const y = cy + ry * Math.sin(theta);
+      stampBrush(Math.round(x), Math.round(y), r, g, b, thickness);
+    }
+  }
+
+  function hexToRgb(hex) {
+    const n = parseInt(hex.slice(1), 16);
+    return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+  }
+
+  let currentTool = 'pencil';
+  let currentColor = '#DC2626';
+  const thicknessSlider = document.getElementById('p-thickness');
+  const thicknessValueLabel = document.getElementById('p-thicknessValue');
+
+  thicknessSlider.addEventListener('input', () => {
+    thicknessValueLabel.textContent = thicknessSlider.value;
+  });
+
+  document.querySelectorAll('.p-tool-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.p-tool-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentTool = btn.dataset.ptool;
+    });
+  });
+
+  document.querySelectorAll('.p-color-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.p-color-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentColor = btn.dataset.pcolor;
+    });
+  });
+
+  document.getElementById('p-clearBtn').addEventListener('click', () => {
+    fillBackground(255, 255, 255);
+    ctx.putImageData(imageData, 0, 0);
+  });
+
+  document.getElementById('p-saveBtn').addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = 'my_paint.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+
+  let isDrawing = false;
+  let startX = 0, startY = 0;
+  let prevX = 0, prevY = 0;
+  let snapshot = null;
+
+  function getMousePos(event) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: Math.floor((event.clientX - rect.left) * scaleX),
+      y: Math.floor((event.clientY - rect.top) * scaleY)
+    };
+  }
+
+  function getActiveColor() {
+    if (currentTool === 'eraser') return { r: 255, g: 255, b: 255 };
+    return hexToRgb(currentColor);
+  }
+
+  canvas.addEventListener('mousedown', (event) => {
+    isDrawing = true;
+    const { x, y } = getMousePos(event);
+    startX = prevX = x;
+    startY = prevY = y;
+
+    if (currentTool === 'pencil' || currentTool === 'eraser') {
+      const { r, g, b } = getActiveColor();
+      stampBrush(x, y, r, g, b, thicknessSlider.value);
+      ctx.putImageData(imageData, 0, 0);
+    } else {
+      snapshot = new Uint8ClampedArray(pixels);
+    }
+  });
+
+  canvas.addEventListener('mousemove', (event) => {
+    if (!isDrawing) return;
+    const { x, y } = getMousePos(event);
+    const { r, g, b } = getActiveColor();
+    const thickness = thicknessSlider.value;
+
+    if (currentTool === 'pencil' || currentTool === 'eraser') {
+      drawThickLine(prevX, prevY, x, y, r, g, b, thickness);
+      prevX = x; prevY = y;
+    } else {
+      pixels.set(snapshot);
+      if (currentTool === 'line') {
+        drawThickLine(startX, startY, x, y, r, g, b, thickness);
+      } else if (currentTool === 'rect') {
+        drawThickRectOutline(startX, startY, x, y, r, g, b, thickness);
+      } else if (currentTool === 'ellipse') {
+        const cx = (startX + x) / 2;
+        const cy = (startY + y) / 2;
+        const rx = Math.abs(x - startX) / 2;
+        const ry = Math.abs(y - startY) / 2;
+        drawThickEllipseOutline(cx, cy, rx, ry, r, g, b, thickness);
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+  });
+
+  function stopDrawing() { isDrawing = false; snapshot = null; }
+  canvas.addEventListener('mouseup', stopDrawing);
+  canvas.addEventListener('mouseleave', stopDrawing);
+})();
 </script>
 
 </body>
