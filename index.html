@@ -1,778 +1,601 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Parinyawat Pannak — CV</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PBR Cat Plaza — Next Gen Rendering</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg: #FBF3E3;
-    --panel: #FFFDF7;
-    --panel-2: #F6E9D3;
-    --line: #E4D2AE;
-    --text: #4A3A26;
-    --muted: #8A7A5F;
-    --accent: #C98A2E;
-    --accent-dim: #B47A24;
-    --warm: #D97706;
+  :root {
+    --ink: #1d1a17;
+    --ink-soft: #5b544c;
+    --panel: rgba(250, 247, 242, 0.82);
+    --line: rgba(29, 26, 23, 0.16);
+    --accent: #b5532c;
+    --stage: #cfc8bd;
   }
-  *{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
-  body{
-    margin:0;
-    background:
-      radial-gradient(1100px 600px at 85% -10%, rgba(201,138,46,0.08), transparent 60%),
-      radial-gradient(900px 500px at -10% 20%, rgba(217,119,6,0.06), transparent 55%),
-      var(--bg);
-    color:var(--text);
-    font-family:'Inter', sans-serif;
-    line-height:1.55;
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #f1ebe2;
+      --ink-soft: #b9b0a3;
+      --panel: rgba(24, 22, 20, 0.78);
+      --line: rgba(241, 235, 226, 0.18);
+      --accent: #f0a06c;
+      --stage: #1b1917;
+    }
   }
-  .mono{ font-family:'JetBrains Mono', monospace; }
-  .wrap{ max-width:1040px; margin:0 auto; padding:56px 28px 100px; }
+  :root[data-theme="dark"] {
+    --ink: #f1ebe2;
+    --ink-soft: #b9b0a3;
+    --panel: rgba(24, 22, 20, 0.78);
+    --line: rgba(241, 235, 226, 0.18);
+    --accent: #f0a06c;
+    --stage: #1b1917;
+  }
+  html, body { height: 100%; margin: 0; background: var(--stage); }
+  body {
+    overflow: hidden;
+    font-family: "IBM Plex Sans Thai", "Noto Sans Thai", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--ink);
+  }
+  canvas#view { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+  canvas#view.dragging-light { cursor: grabbing; }
 
-  /* ---------- HERO ---------- */
-  .hero{
-    padding-bottom:36px;
-    border-bottom:1px solid var(--line);
+  .panel {
+    position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); right: calc(12px + env(safe-area-inset-right, 0px));
+    width: min(300px, calc(100vw - 24px)); box-sizing: border-box; padding: 12px 16px 14px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); font-size: 13px; line-height: 1.55;
   }
-  .eyebrow{
-    font-family:'JetBrains Mono', monospace;
-    font-size:12.5px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--accent); margin:0 0 10px;
+  .panel label { display: flex; justify-content: space-between; font-weight: 600; margin-top: 8px; }
+  .panel label output { color: var(--accent); font-variant-numeric: tabular-nums; }
+  .panel input[type=range] { width: 100%; margin: 2px 0 0; accent-color: var(--accent); }
+  .panel h3 { margin: 12px 0 0; padding-top: 10px; border-top: 1px solid var(--line); font-size: 13px; }
+  .panel h3:first-child { margin: 0; padding: 0; border: 0; }
+  .panel ul { margin: 6px 0 0; padding-left: 18px; color: var(--ink-soft); }
+  .heading {
+    position: fixed;
+    left: calc(14px + env(safe-area-inset-left, 0px));
+    top: calc(12px + env(safe-area-inset-top, 0px));
+    font-size: 15px; font-weight: 600; letter-spacing: 0.01em;
+    padding: 6px 12px; border-radius: 8px;
+    background: var(--panel); border: 1px solid var(--line);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    pointer-events: none;
   }
-  .eyebrow::before{ content:"// "; color:var(--muted); }
-  h1{
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:700; font-size:clamp(34px,5vw,52px);
-    line-height:1.04; margin:0 0 14px; letter-spacing:-0.01em;
-  }
-  .objective{ color:var(--muted); font-size:16px; max-width:56ch; margin:0; }
-  .objective b{ color:var(--text); font-weight:600; }
+  .heading small { font-weight: 400; color: var(--ink-soft); margin-left: 8px; }
 
-  /* ---------- SECTION SHELL ---------- */
-  section.block{ padding:40px 0; border-bottom:1px solid var(--line); }
-  section.block:last-of-type{ border-bottom:none; }
-  .block-head{
-    display:flex; align-items:baseline; gap:12px; margin-bottom:22px;
+  #loading {
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: var(--stage); color: var(--ink); font-size: 15px; z-index: 10;
+    transition: opacity 0.5s ease;
   }
-  .block-tag{
-    font-family:'JetBrains Mono', monospace; font-size:12px;
-    color:var(--panel); background:var(--accent);
-    padding:2px 8px; border-radius:3px; font-weight:700; letter-spacing:.03em;
-  }
-  h2{
-    font-family:'Space Grotesk', sans-serif; font-size:24px; font-weight:600;
-    margin:0; letter-spacing:-0.01em;
-  }
+  #loading.done { opacity: 0; pointer-events: none; }
+  #loading .bar { width: 180px; height: 3px; background: var(--line); margin-top: 12px; border-radius: 2px; overflow: hidden; }
+  #loading .bar i { display: block; height: 100%; width: 40%; background: var(--accent); animation: slide 1.1s ease-in-out infinite; }
+  @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(260%); } }
+  @media (prefers-reduced-motion: reduce) { #loading .bar i { animation: none; width: 100%; } }
 
-  /* ---------- GRID LAYOUT FOR SIDE-BY-SIDE SECTIONS ---------- */
-  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:0 48px; }
-  @media (max-width:720px){ .cols{ grid-template-columns:1fr; } .hero{ text-align:center; } }
-
-  /* ---------- CONTACT ---------- */
-  .contact-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:14px; }
-  .contact-list li{ display:flex; gap:12px; align-items:flex-start; color:var(--text); font-size:14.5px; }
-  .contact-list .ico{ color:var(--accent); font-family:'JetBrains Mono',monospace; font-size:13px; flex:none; width:20px; }
-
-  /* ---------- WORK HISTORY ---------- */
-  .job{ margin-bottom:6px; }
-  .job-title{ font-weight:600; font-size:16.5px; }
-  .job-meta{ font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--muted); margin:2px 0 12px; }
-  ul.tasks{ margin:0; padding-left:18px; color:var(--text); font-size:14.5px; display:flex; flex-direction:column; gap:6px; }
-  ul.tasks li::marker{ color:var(--accent); }
-
-  /* ---------- SKILLS ---------- */
-  .skill-row{ display:flex; gap:14px; margin-bottom:16px; }
-  .skill-row:last-child{ margin-bottom:0; }
-  .skill-key{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--accent); flex:none; width:150px; padding-top:2px; }
-  .skill-val{ font-size:14.5px; color:var(--text); }
-  .pill-row{ display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
-  .pill{
-    font-family:'JetBrains Mono', monospace; font-size:12px; padding:5px 10px;
-    border:1px solid var(--line); border-radius:20px; color:var(--muted);
-    background:var(--panel);
-  }
-
-  /* ---------- EDUCATION / REFERENCE / HOBBIES ---------- */
-  .edu-date{ font-family:'JetBrains Mono', monospace; color:var(--accent); font-size:12.5px; }
-  .edu-title{ font-weight:600; margin:4px 0 2px; }
-  .ref-item{ margin-bottom:16px; }
-  .ref-item:last-child{ margin-bottom:0; }
-  .ref-name{ font-weight:600; }
-  .ref-role{ color:var(--muted); font-size:13.5px; }
-  .hobby-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; font-size:14.5px; }
-  .hobby-list li::before{ content:"— "; color:var(--accent); }
-
-  /* ---------- ICG / SIGNATURE SECTION ---------- */
-  .icg{
-    background:var(--panel);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:28px;
-    margin-top:6px;
-  }
-  .icg-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
-  .icg-desc{ color:var(--muted); font-size:14.5px; max-width:52ch; }
-  .icg-desc code{ color:var(--accent); background:rgba(94,234,212,0.08); padding:1px 5px; border-radius:3px; }
-  .dot-row{ display:flex; gap:6px; margin-bottom:16px; }
-  .dot{ width:10px; height:10px; border-radius:50%; }
-  .dot.r{ background:#F87171; } .dot.y{ background:#FBBF24; } .dot.g{ background:#4ADE80; }
-  .stage{
-    background:#fff;
-    border-radius:8px;
-    overflow:hidden;
-    border:1px solid var(--line);
-    display:flex; justify-content:center;
-    padding:14px;
-  }
-  #canvas{
-    image-rendering:pixelated;
-    border-radius:4px;
-    cursor:crosshair;
-  }
-  .hint{
-    font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--muted);
-    margin-top:14px; text-align:center;
-  }
-  .hint kbd{
-    font-family:'JetBrains Mono', monospace; background:var(--panel-2);
-    border:1px solid var(--line); border-radius:4px; padding:1px 6px; color:var(--accent);
-  }
-
-  footer{ text-align:center; color:var(--muted); font-family:'JetBrains Mono', monospace; font-size:12px; padding-top:40px; }
-
-  /* ---------- MINI PAINT (matches .icg theme) ---------- */
-  #paint-toolbar{
-    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
-    background:var(--panel-2); border:1px solid var(--line); border-radius:10px;
-    padding:12px 14px; margin-bottom:16px;
-  }
-  .p-group{ display:flex; align-items:center; gap:6px; padding-right:14px; border-right:1px solid var(--line); }
-  .p-group:last-child{ border-right:none; padding-right:0; }
-  .p-group-label{
-    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted);
-    margin-right:4px; text-transform:uppercase; letter-spacing:.05em;
-  }
-  .p-tool-btn{
-    width:38px; height:38px; border:1px solid var(--line); background:var(--panel);
-    cursor:pointer; font-size:16px; border-radius:8px;
-    display:flex; align-items:center; justify-content:center;
-    transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
-  }
-  .p-tool-btn:hover{ transform:translateY(-2px); box-shadow:0 4px 10px rgba(74,58,38,0.15); }
-  .p-tool-btn.active{ background:var(--accent); border-color:var(--accent-dim); box-shadow:0 4px 10px rgba(201,138,46,0.35); }
-  .p-color-btn{
-    width:26px; height:26px; border:2px solid var(--panel); border-radius:50%; cursor:pointer;
-    padding:0; box-shadow:0 0 0 1px var(--line), 0 1px 3px rgba(74,58,38,0.15);
-    transition:transform .12s ease;
-  }
-  .p-color-btn:hover{ transform:scale(1.12); }
-  .p-color-btn.active{ box-shadow:0 0 0 2px var(--text), 0 2px 6px rgba(74,58,38,0.3); transform:scale(1.15); }
-  .p-control{ display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); }
-  #p-thickness{ accent-color:var(--accent); }
-  #p-thicknessValue{ width:20px; display:inline-block; text-align:right; font-weight:600; color:var(--accent); font-family:'JetBrains Mono', monospace; }
-  #paint-canvas-wrap{
-    background:
-      linear-gradient(45deg, var(--panel-2) 25%, transparent 25%),
-      linear-gradient(-45deg, var(--panel-2) 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, var(--panel-2) 75%),
-      linear-gradient(-45deg, transparent 75%, var(--panel-2) 75%);
-    background-size:16px 16px;
-    background-position:0 0, 0 8px, 8px -8px, -8px 0px;
-    display:flex; justify-content:center;
-    border:1px solid var(--line); border-radius:8px; overflow:hidden; padding:14px;
-  }
-  #paintCanvas{ display:block; cursor:crosshair; background:#fff; border-radius:4px; }
-  #paint-actions{ margin-top:14px; display:flex; gap:10px; }
-  #paint-actions button{
-    padding:8px 14px; cursor:pointer; border:1px solid var(--line); border-radius:8px;
-    font-size:12.5px; font-weight:600; font-family:'JetBrains Mono', monospace;
-    transition:transform .12s ease;
-  }
-  #paint-actions button:hover{ transform:translateY(-1px); }
-  #p-clearBtn{ background:var(--panel); color:var(--muted); }
-  #p-saveBtn{ background:var(--accent); color:var(--panel); border-color:var(--accent-dim); }
+  /* keep dat.GUI clear of the status bar */
+  .dg.ac { top: env(safe-area-inset-top, 0px) !important; right: env(safe-area-inset-right, 0px) !important; z-index: 5 !important; }
+  .dg { font-family: "IBM Plex Sans Thai", system-ui, sans-serif !important; }
 </style>
 </head>
 <body>
+<canvas id="view"></canvas>
+<div class="heading">PBR Cat Plaza<small>Three.js</small></div>
 
-<div class="wrap">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div>
-      <p class="eyebrow">software engineer / cs student</p>
-      <h1>Parinyawat<br>Pannak</h1>
-      <p class="objective"><b>Objective:</b> To obtain a full-time job in software engineering or Data Scientist.</p>
-    </div>
-  </div>
-
-  <!-- CONTACT + WORK HISTORY -->
-  <section class="block">
-    <div class="cols">
-      <div>
-        <div class="block-head"><span class="block-tag">01</span><h2>Contact</h2></div>
-        <ul class="contact-list">
-          <li><span class="ico">mail</span> parinyawat.p@ku.th</li>
-          <li><span class="ico">addr</span> -</li>
-        </ul>
-
-        <div class="block-head" style="margin-top:36px;"><span class="block-tag">02</span><h2>Education</h2></div>
-        <div class="edu-date">Sep 2025 – Present</div>
-        <div class="edu-title">B.S. Computer Science</div>
-        <div style="color:var(--muted); font-size:14.5px;">Kasetsart University</div>
-
-        <div class="block-head" style="margin-top:36px;"><span class="block-tag">03</span><h2>Reference</h2></div>
-        <div class="ref-item">
-          <div class="ref-name">Kritsana Treechalong</div>
-          <div class="ref-role">Lecturer, Kasetsart University</div>
-        </div>
-        <div class="ref-item">
-          <div class="ref-name">Sasin Tiendee</div>
-          <div class="ref-role">Lecturer, Kasetsart University</div>
-        </div>
-      </div>
-
-      <div>
-        <div class="block-head"><span class="block-tag">04</span><h2>Work History</h2></div>
-        <div class="job">
-          <div class="job-title">-</div>
-        </div>
-
-        <div class="block-head" style="margin-top:36px;"><span class="block-tag">05</span><h2>Hobbies</h2></div>
-        <ul class="hobby-list">
-          <li>Running</li>
-          <li>Playing FPS and MOBA games</li>
-          <li>Listening to music</li>
-          <li>Watching movies</li>
-          <li>Swimming</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section class="block">
-    <div class="block-head"><span class="block-tag">06</span><h2>Skills</h2></div>
-    <div class="skill-row">
-      <div class="skill-key">languages</div>
-      <div class="skill-val">
-        <div class="pill-row">
-          <span class="pill">Java</span>
-          <span class="pill">C</span>
-          <span class="pill">HTML</span>
-          <span class="pill">Python</span>
-          <span class="pill">Assembly</span>
-        </div>
-      </div>
-    </div>
-    <div class="skill-row">
-      <div class="skill-key">computer literacy</div>
-      <div class="skill-val">Microsoft Office, Canva</div>
-    </div>
-    <div class="skill-row">
-      <div class="skill-key">working style</div>
-      <div class="skill-val">Responsible and self-motivated. Works well with others.</div>
-    </div>
-  </section>
-
-  <!-- INTERACTIVE COMPUTER GRAPHICS (signature section) -->
-  <section class="block" id="icg">
-    <div class="block-head"><span class="block-tag">07</span><h2>Interactive Computer Graphics</h2></div>
-
-    <div class="icg">
-      <div class="icg-top">
-        <div>
-          <div class="dot-row"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
-          <div class="mono" style="font-size:13px; color:var(--accent); margin-bottom:6px;">raster_graphics.html</div>
-          <p class="icg-desc">
-            Hand-written raster renderer: a custom framebuffer with <code>putPixel</code>, 24-bit color sprites,
-            and a <code>Translate / Rotate / Scale</code> pipeline built from scratch (no canvas draw calls for the sprites themselves).
-          </p>
-        </div>
-      </div>
-
-      <div class="stage">
-        <canvas id="canvas" width="200" height="200" style="width:400px; height:400px;"></canvas>
-      </div>
-      <p class="hint">hold <kbd>←</kbd> / <kbd>→</kbd> to spin the monkey · hold <kbd>↑</kbd> to grow, <kbd>↓</kbd> to shrink</p>
-    </div>
-  </section>
-
-  <!-- MINI PAINT (extra work, same theme) -->
-  <section class="block" id="paint">
-    <div class="block-head"><span class="block-tag">08</span><h2>Mini Paint</h2></div>
-
-    <div class="icg">
-      <div class="icg-top">
-        <div>
-          <div class="dot-row"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></div>
-          <div class="mono" style="font-size:13px; color:var(--accent); margin-bottom:6px;">my_paint.html</div>
-          <p class="icg-desc">
-            A tiny raster-based paint program: pencil, line, rectangle, ellipse and eraser tools,
-            each with adjustable color and stroke thickness, drawn pixel-by-pixel onto a manual framebuffer.
-          </p>
-        </div>
-      </div>
-
-      <div id="paint-toolbar">
-        <div class="p-group">
-          <span class="p-group-label">เครื่องมือ</span>
-          <button class="p-tool-btn active" data-ptool="pencil" title="ดินสอ">✏️</button>
-          <button class="p-tool-btn" data-ptool="line" title="เส้น">📏</button>
-          <button class="p-tool-btn" data-ptool="rect" title="สี่เหลี่ยม">▭</button>
-          <button class="p-tool-btn" data-ptool="ellipse" title="วงรี">⬭</button>
-          <button class="p-tool-btn" data-ptool="eraser" title="ยางลบ">🧹</button>
-        </div>
-
-        <div class="p-group">
-          <span class="p-group-label">สี</span>
-          <button class="p-color-btn active" data-pcolor="#DC2626" style="background:#DC2626" title="แดง"></button>
-          <button class="p-color-btn" data-pcolor="#D97706" style="background:#D97706" title="ส้ม"></button>
-          <button class="p-color-btn" data-pcolor="#EAB308" style="background:#EAB308" title="เหลือง"></button>
-          <button class="p-color-btn" data-pcolor="#65A30D" style="background:#65A30D" title="เขียว"></button>
-          <button class="p-color-btn" data-pcolor="#2563EB" style="background:#2563EB" title="น้ำเงิน"></button>
-          <button class="p-color-btn" data-pcolor="#4338CA" style="background:#4338CA" title="คราม"></button>
-          <button class="p-color-btn" data-pcolor="#7E22CE" style="background:#7E22CE" title="ม่วง"></button>
-        </div>
-
-        <div class="p-group" style="border-right:none;">
-          <span class="p-group-label">ความหนา</span>
-          <input type="range" id="p-thickness" min="1" max="30" value="4">
-          <span id="p-thicknessValue">4</span>
-        </div>
-      </div>
-
-      <div id="paint-canvas-wrap">
-        <canvas id="paintCanvas" width="600" height="400"></canvas>
-      </div>
-
-      <div id="paint-actions">
-        <button id="p-clearBtn">ล้างทั้งหมด</button>
-        <button id="p-saveBtn">บันทึกเป็น PNG</button>
-      </div>
-    </div>
-  </section>
-
-  <footer>built &amp; rendered pixel by pixel — Parinyawat Pannak, 2026</footer>
+<div class="panel">
+  <h3>ตำแหน่งแสง</h3>
+  <label>Light X <output id="oX"></output></label><input type="range" id="sX" min="-12" max="12" step="0.1">
+  <label>Light Y <output id="oY"></output></label><input type="range" id="sY" min="0.5" max="12" step="0.1">
+  <label>Light Z <output id="oZ"></output></label><input type="range" id="sZ" min="-12" max="12" step="0.1">
+  <h3>วัสดุแมว (PBR)</h3>
+  <label>Metallic <output id="oM"></output></label><input type="range" id="sM" min="0" max="1" step="0.01">
+  <label>Roughness <output id="oR"></output></label><input type="range" id="sR" min="0" max="1" step="0.01">
+  <h3>วิธีควบคุม</h3>
+  <ul>
+    <li>เมาส์: ลากลูกแสงสีเหลืองเพื่อย้ายไฟ</li>
+    <li>ลากพื้นที่ว่างเพื่อหมุนกล้อง · Scroll ซูม</li>
+    <li>ดับเบิลคลิกที่พื้นเพื่อวางไฟตรงนั้น</li>
+    <li>คีย์บอร์ด: WASD ขยับไฟ · Q/E ลง/ขึ้น</li>
+  </ul>
 </div>
 
+<div id="loading"><div>กำลังโหลดฉาก…<div class="bar"><i></i></div></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/EXRLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
 <script>
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const imageData = ctx.createImageData(canvas.width, canvas.height);
-const pixels = imageData.data;
+/* ---------- external asset files (same folder as index.html) ---------- */
+const GLB_URL = 'cat.glb';
+const EXR_URL = 'rathaus_1k.exr';
 
-function putPixel(x, y, r, g, b, a = 255) {
-  if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) return;
-  const idx = (y * canvas.width + x) * 4;
-  pixels[idx] = r; pixels[idx+1] = g; pixels[idx+2] = b; pixels[idx+3] = a;
+/* ---------- renderer / scene / camera ---------- */
+const canvas = document.getElementById('view');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x15130f);
+
+const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 400);
+const CAM_HOME = new THREE.Vector3(0, 4.6, 14.5);
+const TARGET_HOME = new THREE.Vector3(0, 1.5, 0.8);
+camera.position.copy(CAM_HOME);
+
+const controls = new THREE.OrbitControls(camera, canvas);
+controls.target.copy(TARGET_HOME);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 3;
+controls.maxDistance = 38;
+controls.maxPolarAngle = Math.PI * 0.495;   // keep camera above the floor
+controls.update();
+
+const maxAniso = renderer.capabilities.getMaxAnisotropy();
+
+const allPBR = [];
+function registerPBR(mat) { allPBR.push(mat); return mat; }
+
+/* ---------- procedural PBR texture helpers ---------- */
+function makeCanvas(size) {
+  const c = document.createElement('canvas');
+  c.width = c.height = size;
+  return c;
 }
-function drawRectFilled(x1,y1,x2,y2,r,g,b,a=255){
-  for (let y=y1;y<=y2;y++) for (let x=x1;x<=x2;x++) putPixel(x,y,r,g,b,a);
-}
-function drawEllipse(cx, cy, rx, ry, r, g, b, a = 255) {
-  rx = Math.max(1, rx); ry = Math.max(1, ry);
-  for (let y=-ry;y<=ry;y++) for (let x=-rx;x<=rx;x++)
-    if ((x*x)/(rx*rx)+(y*y)/(ry*ry) <= 1) putPixel(cx+x, cy+y, r, g, b, a);
-}
-// สไปรท์สีเดียว (1-bit mask) หมุน + scale แยกแกน X/Y — มาจาก raster_graphics.html ต้นฉบับ
-function drawSpriteRotateScale(sprite, x, y, degree, scaleX, scaleY, r, g, b, a = 255) {
-  const rad = degree * Math.PI / 180;
-  const centerX = sprite[0].length / 2;
-  const centerY = sprite.length / 2;
-  for (let j = 0; j < sprite.length; j++) {
-    for (let i = 0; i < sprite[j].length; i++) {
-      if (sprite[j][i] === 1) {
-        const cX = i - centerX;
-        const cY = j - centerY;
-        const x_rot = Math.round(x + (cX * Math.cos(rad) - cY * Math.sin(rad)) * scaleX);
-        const y_rot = Math.round(y + (cX * Math.sin(rad) + cY * Math.cos(rad)) * scaleY);
-        drawEllipse(x_rot, y_rot, Math.max(1, Math.round(scaleX)), Math.max(1, Math.round(scaleY)), r, g, b, a);
-      }
+
+function heightToNormalCanvas(heightCanvas, strength) {
+  const w = heightCanvas.width, h = heightCanvas.height;
+  const src = heightCanvas.getContext('2d').getImageData(0, 0, w, h).data;
+  const out = makeCanvas(w);
+  const octx = out.getContext('2d');
+  const img = octx.createImageData(w, h);
+  const H = (x, y) => src[(((y + h) % h) * w + ((x + w) % w)) * 4] / 255;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const nx = (H(x - 1, y) - H(x + 1, y)) * strength;
+      const ny = (H(x, y + 1) - H(x, y - 1)) * strength;
+      const len = Math.sqrt(nx * nx + ny * ny + 1);
+      const i = (y * w + x) * 4;
+      img.data[i]     = ((nx / len) * 0.5 + 0.5) * 255;
+      img.data[i + 1] = ((ny / len) * 0.5 + 0.5) * 255;
+      img.data[i + 2] = ((1 / len) * 0.5 + 0.5) * 255;
+      img.data[i + 3] = 255;
     }
+  }
+  octx.putImageData(img, 0, 0);
+  return out;
+}
+
+function toTexture(c, srgb, repeatX, repeatY) {
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.anisotropy = maxAniso;
+  if (srgb) t.encoding = THREE.sRGBEncoding;
+  if (repeatX) t.repeat.set(repeatX, repeatY || repeatX);
+  return t;
+}
+
+// seeded random so the look is stable between visits
+let seed = 7;
+function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+
+function speckle(ctx, size, count, rMin, rMax, alpha, light, rgb) {
+  for (let i = 0; i < count; i++) {
+    const x = rnd() * size, y = rnd() * size, r = rMin + rnd() * (rMax - rMin);
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    const v = light ? 255 : 0;
+    const c = rgb || `${v},${v},${v}`;
+    g.addColorStop(0, `rgba(${c},${alpha})`);
+    g.addColorStop(1, `rgba(${c},0)`);
+    ctx.fillStyle = g;
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
   }
 }
 
-function drawSprite24BitRotateScale(sprite, x, y, degree, scaleX, scaleY, a = 255) {
-  const rad = degree * Math.PI / 180;
-  const centerX = sprite[0].length / 2;
-  const centerY = sprite.length / 2;
-  for (let j=0;j<sprite.length;j++){
-    for (let i=0;i<sprite[j].length;i++){
-      const color = sprite[j][i];
-      if (color !== null) {
-        const r=(color>>16)&255, g=(color>>8)&255, b=color&255;
-        const cX = i - centerX, cY = j - centerY;
-        const sX = cX * scaleX, sY = cY * scaleY;
-        const x_rot = Math.round(x + sX*Math.cos(rad) - sY*Math.sin(rad));
-        const y_rot = Math.round(y + sX*Math.sin(rad) + sY*Math.cos(rad));
-        drawEllipse(x_rot, y_rot, Math.max(1,Math.round(scaleX)), Math.max(1,Math.round(scaleY)), r, g, b, a);
-      }
+/* Floor: polished stone tiles — smooth tile, rough grout, normal-mapped joints */
+function buildFloorMaterial() {
+  const S = 512, tiles = 2, T = S / tiles, groove = 5;
+  const color = makeCanvas(S), rough = makeCanvas(S), height = makeCanvas(S);
+  const cc = color.getContext('2d'), rc = rough.getContext('2d'), hc = height.getContext('2d');
+
+  cc.fillStyle = '#1c1a18'; cc.fillRect(0, 0, S, S);
+  rc.fillStyle = 'rgb(0,225,0)'; rc.fillRect(0, 0, S, S);     // grout: roughness ~0.88, metal 0
+  hc.fillStyle = '#000'; hc.fillRect(0, 0, S, S);
+
+  for (let ty = 0; ty < tiles; ty++) {
+    for (let tx = 0; tx < tiles; tx++) {
+      const light = (tx + ty) % 2 === 0;
+      const x = tx * T + groove / 2, y = ty * T + groove / 2, w = T - groove, h = T - groove;
+      cc.fillStyle = light ? '#cfc8bb' : '#5b5e63'; cc.fillRect(x, y, w, h);
+      rc.fillStyle = light ? 'rgb(0,100,0)' : 'rgb(0,44,0)'; rc.fillRect(x, y, w, h);  // light ≈0.37, dark ≈0.13
+      hc.fillStyle = '#fff'; hc.fillRect(x, y, w, h);
     }
   }
+  // stone veining + smudges (variation in color and roughness)
+  for (let i = 0; i < 26; i++) {
+    cc.strokeStyle = `rgba(${rnd() > 0.5 ? '255,255,255' : '0,0,0'},0.07)`;
+    cc.lineWidth = 1 + rnd() * 2;
+    cc.beginPath();
+    const x0 = rnd() * S, y0 = rnd() * S;
+    cc.moveTo(x0, y0);
+    cc.bezierCurveTo(x0 + rnd() * 120 - 60, y0 + rnd() * 120 - 60, x0 + rnd() * 160 - 80, y0 + rnd() * 160 - 80, x0 + rnd() * 200 - 100, y0 + rnd() * 200 - 100);
+    cc.stroke();
+  }
+  speckle(cc, S, 90, 14, 46, 0.06, true);
+  speckle(cc, S, 90, 14, 46, 0.06, false);
+  rc.globalCompositeOperation = 'lighter';
+  speckle(rc, S, 70, 10, 40, 0.10, true, '0,255,0');
+  rc.globalCompositeOperation = 'source-over';
+
+  const rep = 40;
+  const mat = new THREE.MeshStandardMaterial({
+    map: toTexture(color, true, rep),
+    roughnessMap: toTexture(rough, false, rep),
+    metalnessMap: toTexture(rough, false, rep),    // B channel = 0 → dielectric
+    normalMap: toTexture(heightToNormalCanvas(height, 3.0), false, rep),
+    roughness: 1.0,
+    metalness: 1.0,                                // multiplied by the B channel (0)
+    envMapIntensity: 1.0
+  });
+  mat.normalScale.set(1, 1);
+  return registerPBR(mat);
 }
 
-const spaceInvaderSprite = [
-  [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
-  [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
-  [0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0],
-  [0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
-  [0,0,1,1,1,1,0,0,0,0,1,1,1,1,0,0],
-  [0,0,1,1,1,0,1,0,0,1,0,1,1,1,0,0],
-  [0,0,1,1,1,0,0,1,1,0,0,1,1,1,0,0],
-  [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
-  [0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0],
-  [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
-  [0,0,0,1,1,1,0,1,1,0,1,1,1,0,0,0],
-  [0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0],
-  [0,0,1,1,0,1,1,1,1,1,1,0,1,1,0,0],
-  [0,1,1,0,0,1,1,0,0,1,1,0,0,1,1,0],
-  [0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0],
-  [1,0,0,0,1,0,0,0,0,0,0,1,0,0,0,1],
-];
-
-const smileSprite24Bit = [
-  [null,null,0xB45309,0xD97706,0xD97706,0xB45309,null,null],
-  [null,0xD97706,0xFDE047,0xFEF08A,0xFEF08A,0xFDE047,0xD97706,null],
-  [0xB45309,0xFDE047,0x111827,0xFDE047,0xFDE047,0x111827,0xFDE047,0xB45309],
-  [0xD97706,0xFEF08A,0x111827,0xFEF08A,0xFEF08A,0x111827,0xFEF08A,0xD97706],
-  [0xD97706,0xFDE047,0xFDE047,0xFDE047,0xFDE047,0xFDE047,0xFDE047,0xD97706],
-  [0xB45309,0xFDE047,0x111827,0xFDE047,0xFDE047,0x111827,0xFDE047,0xB45309],
-  [null,0xD97706,0xFDE047,0x111827,0x111827,0xFDE047,0xD97706,null],
-  [null,null,0xB45309,0xD97706,0xD97706,0xB45309,null,null],
-];
-
-const W = null;
-const CREAM=0xF6E7C6, CREAM2=0xFBF2DE, GOLD=0xC98A2E, LEAF=0x7CB342;
-const sheepCookieSprite = [
-  [W,W,W,LEAF,GOLD,W,W,W,W,W,GOLD,LEAF,W,W,W,W],
-  [W,W,LEAF,LEAF,GOLD,W,W,W,W,W,GOLD,LEAF,LEAF,W,W,W],
-  [W,W,GOLD,GOLD,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,GOLD,GOLD,W,W,W],
-  [W,GOLD,CREAM,CREAM2,CREAM,CREAM,CREAM2,CREAM,CREAM,CREAM2,CREAM,CREAM,CREAM,GOLD,W,W],
-  [GOLD,CREAM,CREAM2,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM2,CREAM,GOLD,W],
-  [GOLD,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,CREAM,GOLD,W],
-  [W,GOLD,CREAM,CREAM,GOLD,GOLD,GOLD,GOLD,GOLD,GOLD,GOLD,GOLD,CREAM,GOLD,W,W],
-  [W,W,GOLD,0xF4C77B,0x3B2412,0xF4C77B,0xF4C77B,W,W,0xF4C77B,0xF4C77B,0x3B2412,0xF4C77B,GOLD,W,W],
-  [W,W,GOLD,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,W,W,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,GOLD,W,W],
-  [W,W,W,GOLD,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,0xF4C77B,GOLD,W,W,W],
-  [W,W,W,GOLD,0xE8935B,0xE8935B,0xC98A2E,0xF4C77B,0xF4C77B,0xC98A2E,0xE8935B,GOLD,W,W,W,W],
-  [W,W,W,W,GOLD,0xE8935B,0xE8935B,0xE8935B,0xE8935B,0xE8935B,GOLD,W,W,W,W,W],
-  [W,W,0x8BC34A,GOLD,W,GOLD,0xE8935B,0xE8935B,0xE8935B,GOLD,W,GOLD,0xE8935B,W,W,W],
-  [W,0x8BC34A,0x8BC34A,GOLD,W,W,GOLD,GOLD,GOLD,W,W,GOLD,0xE8935B,0xC98A2E,W,W],
-  [0x8BC34A,0x8BC34A,GOLD,W,W,W,W,W,W,W,W,W,GOLD,0xC98A2E,W,W],
-  [W,GOLD,W,W,W,W,W,W,W,W,W,W,W,GOLD,W,W],
-];
-
-const DARK_FUR=0x6B4226, FUR=0x9C6B3E, FACE=0xF6D9B0, FACE_LT=0xFCE9CC, EAR_PINK=0xF4A6BA,
-      EYE=0x1A1A1A, NOSE=0x4A2E1A, BOW=0xE63946, BOW_DK=0xB22C39, BANANA=0xFCD34D, BANANA_DK=0xB45309;
-const monkeySprite24Bit = [
-  [W,W,DARK_FUR,DARK_FUR,W,W,W,W,W,W,W,W,DARK_FUR,DARK_FUR,W,W],
-  [W,DARK_FUR,FUR,FUR,DARK_FUR,W,W,W,W,W,W,DARK_FUR,FUR,FUR,DARK_FUR,W],
-  [W,DARK_FUR,FACE,FACE,DARK_FUR,W,W,W,W,W,W,DARK_FUR,FACE,FACE,DARK_FUR,W],
-  [DARK_FUR,FUR,EAR_PINK,FACE,FUR,DARK_FUR,DARK_FUR,DARK_FUR,DARK_FUR,DARK_FUR,DARK_FUR,FUR,FACE,EAR_PINK,FUR,DARK_FUR],
-  [DARK_FUR,FUR,FUR,FUR,FUR,FACE,FACE,FACE,FACE,FACE,FACE,FUR,FUR,FUR,FUR,DARK_FUR],
-  [W,DARK_FUR,FUR,FUR,FACE,FACE,FACE_LT,FACE,FACE,FACE_LT,FACE,FACE,FUR,FUR,DARK_FUR,W],
-  [W,W,DARK_FUR,FACE,FACE,EYE,FACE,FACE,FACE,FACE,EYE,FACE,FACE,DARK_FUR,W,W],
-  [W,W,FUR,FACE,FACE,FACE,FACE,NOSE,NOSE,FACE,FACE,FACE,FACE,FUR,W,W],
-  [W,W,FUR,FACE,FACE,FACE_LT,FACE,FACE,FACE,FACE,FACE_LT,FACE,FACE,FUR,W,W],
-  [W,W,DARK_FUR,FACE,FACE,FACE,FACE,FACE,FACE,FACE,FACE,FACE,FACE,DARK_FUR,W,W],
-  [W,W,W,DARK_FUR,BOW_DK,BOW,DARK_FUR,FUR,FUR,DARK_FUR,BOW,BOW_DK,DARK_FUR,W,W,W],
-  [W,W,W,FUR,FUR,BOW,BOW,BOW_DK,BOW_DK,BOW,BOW,FUR,FUR,W,W,W],
-  [W,W,DARK_FUR,FUR,FUR,FUR,DARK_FUR,W,W,DARK_FUR,FUR,FUR,FUR,DARK_FUR,W,W],
-  [W,DARK_FUR,FUR,FUR,BANANA_DK,BANANA,BANANA,BANANA,BANANA,BANANA,BANANA,FUR,FUR,DARK_FUR,W,W],
-  [W,DARK_FUR,FUR,W,W,BANANA,BANANA,BANANA,BANANA,BANANA,W,W,FUR,DARK_FUR,W,W],
-  [W,W,DARK_FUR,W,W,W,DARK_FUR,DARK_FUR,DARK_FUR,DARK_FUR,W,W,W,DARK_FUR,W,W],
-];
-
-const CHIBI_TEMPLATE = [
-  [0,0,0,2,2,0,0,0,0,2,2,0,0,0],
-  [0,0,2,2,2,2,0,0,2,2,2,2,0,0],
-  [0,0,2,1,1,2,0,0,2,1,1,2,0,0],
-  [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-  [1,1,3,1,1,1,1,1,1,1,1,3,1,1],
-  [1,3,1,1,4,1,1,1,1,4,1,1,3,1],
-  [1,1,1,1,4,1,1,1,1,4,1,1,1,1],
-  [1,5,1,1,1,1,6,6,1,1,1,1,5,1],
-  [1,1,1,1,1,1,6,6,1,1,1,1,1,1],
-  [0,1,1,1,1,1,1,1,1,1,1,1,1,0],
-  [0,0,1,1,1,1,1,1,1,1,1,1,0,0],
-  [0,0,0,1,1,1,1,1,1,1,1,0,0,0],
-  [0,0,0,0,1,1,1,1,1,1,0,0,0,0],
-  [0,0,0,0,0,1,1,1,1,0,0,0,0,0],
-];
-function buildChibiSprite(c){ return CHIBI_TEMPLATE.map(row => row.map(v => v===0?null:c[v])); }
-const chibiCatSprite    = buildChibiSprite({1:0xFFB870,2:0xFF8C42,3:0xFFE7C2,4:0x2B2B2B,5:0xFF9EB5,6:0xFFFFFF});
-const chibiBearSprite   = buildChibiSprite({1:0x8B5E3C,2:0x6B4226,3:0xD9A066,4:0x1A1A1A,5:0xF4A6BA,6:0x3E2A1A});
-const chibiBunnySprite  = buildChibiSprite({1:0xFFFFFF,2:0xFFD1DC,3:0xF5F5F5,4:0xB03060,5:0xFFB6C1,6:0xFF69B4});
-const chibiPandaSprite  = buildChibiSprite({1:0xFFFFFF,2:0x1A1A1A,3:0xF5F5F5,4:0x1A1A1A,5:0xFFB6C1,6:0x1A1A1A});
-const chibiFoxSprite    = buildChibiSprite({1:0xE8703A,2:0xC65A2E,3:0xFFF3E0,4:0x1A1A1A,5:0xFF9E80,6:0x1A1A1A});
-const chibiDinoSprite   = buildChibiSprite({1:0x6ABF69,2:0x4C9950,3:0xB6E6A8,4:0x1A1A1A,5:0xA8E063,6:0xFFD54F});
-const chibiPenguinSprite= buildChibiSprite({1:0x2C3E50,2:0xFFFFFF,3:0x4A6278,4:0x1A1A1A,5:0xFF9EB5,6:0xFFA726});
-const chibiUnicornSprite= buildChibiSprite({1:0xF6F0FB,2:0xC084FC,3:0xFFFFFF,4:0x1A1A1A,5:0xFFB6C1,6:0xFCD34D});
-
-let degree = 0;
-const rotateSpeed = 1.2;
-let scale = 1, targetScale = 1;
-const minScale = 0.2, maxScale = 5, scaleStep = 0.05;
-let upPressed = false, downPressed = false;
-let leftPressed = false, rightPressed = false;
-let mouseX = 100, mouseY = 100;
-const monkeyX = 100, monkeyY = 130; // ลิงอยู่นิ่งตำแหน่งเดิมเสมอ ไม่วิ่งตามเมาส์ หมุนได้ด้วยปุ่ม ←/→ เท่านั้น
-
-function toScaledMousePos(posX, posY) {
-  const rect = canvas.getBoundingClientRect();
-  const sx = canvas.width / rect.width, sy = canvas.height / rect.height;
-  return { x: Math.floor((posX - rect.left) * sx), y: Math.floor((posY - rect.top) * sy) };
+/* Window grid used by the glass-and-steel towers: G = roughness, B = metalness */
+function buildCurtainWallMaterials(cols, rows, tint) {
+  const S = 256;
+  const color = makeCanvas(S), orm = makeCanvas(S);
+  const cc = color.getContext('2d'), oc = orm.getContext('2d');
+  cc.fillStyle = '#7d8790'; cc.fillRect(0, 0, S, S);
+  oc.fillStyle = 'rgb(0,128,255)'; oc.fillRect(0, 0, S, S);                    // frame: brushed aluminium
+  const cw = S / 4, ch = S / 4, m = 5;
+  for (let y = 0; y < 4; y++) for (let x = 0; x < 4; x++) {
+    const g = cc.createLinearGradient(x * cw, y * ch, x * cw + cw, y * ch + ch);
+    g.addColorStop(0, tint[0]); g.addColorStop(1, tint[1]);
+    cc.fillStyle = g; cc.fillRect(x * cw + m, y * ch + m, cw - 2 * m, ch - 2 * m);
+    oc.fillStyle = 'rgb(0,22,90)';                                           // glass: very smooth, low metal
+    oc.fillRect(x * cw + m, y * ch + m, cw - 2 * m, ch - 2 * m);
+  }
+  return { color, orm, cols: cols / 4, rows: rows / 4 };
 }
-canvas.addEventListener('mousemove', (e) => {
-  const { x, y } = toScaledMousePos(e.clientX, e.clientY);
-  mouseX = x; mouseY = y;
+
+function curtainWall(w, h, d, tint) {
+  const cols = Math.round(w / 0.9 / 4) * 4 || 4;
+  const rows = Math.round(h / 0.9 / 4) * 4 || 4;
+  const side = new THREE.MeshStandardMaterial({ roughness: 1, metalness: 1, envMapIntensity: 1.2 });
+  const p = buildCurtainWallMaterials(cols, rows, tint);
+  side.map = toTexture(p.color, true, p.cols, p.rows);
+  side.roughnessMap = toTexture(p.orm, false, p.cols, p.rows);
+  side.metalnessMap = side.roughnessMap;
+  registerPBR(side);
+  return side;
+}
+
+function brickMaterial() {
+  const S = 512, bw = 64, bh = 32, gap = 4;
+  const color = makeCanvas(S), height = makeCanvas(S), rough = makeCanvas(S);
+  const cc = color.getContext('2d'), hc = height.getContext('2d'), rc = rough.getContext('2d');
+  cc.fillStyle = '#b9b0a2'; cc.fillRect(0, 0, S, S);
+  hc.fillStyle = '#000'; hc.fillRect(0, 0, S, S);
+  rc.fillStyle = 'rgb(0,250,0)'; rc.fillRect(0, 0, S, S);
+  for (let row = 0; row < S / bh; row++) {
+    const off = row % 2 ? bw / 2 : 0;
+    for (let col = -1; col < S / bw + 1; col++) {
+      const x = col * bw + off + gap / 2, y = row * bh + gap / 2;
+      const v = 0.75 + rnd() * 0.25;
+      cc.fillStyle = `rgb(${Math.round(150 * v)},${Math.round(62 * v)},${Math.round(44 * v)})`;
+      cc.fillRect(x, y, bw - gap, bh - gap);
+      hc.fillStyle = '#fff';
+      hc.fillRect(x, y, bw - gap, bh - gap);
+      rc.fillStyle = `rgb(0,${200 + (rnd() * 40 | 0)},0)`;
+      rc.fillRect(x, y, bw - gap, bh - gap);
+    }
+  }
+  speckle(cc, S, 80, 8, 30, 0.08, false);
+  const mat = new THREE.MeshStandardMaterial({
+    map: toTexture(color, true, 2, 3),
+    roughnessMap: toTexture(rough, false, 2, 3),
+    normalMap: toTexture(heightToNormalCanvas(height, 4.0), false, 2, 3),
+    roughness: 1.0, metalness: 0.0
+  });
+  return registerPBR(mat);
+}
+
+function concreteMaterial(base, repeat) {
+  const S = 256;
+  const color = makeCanvas(S), rough = makeCanvas(S), height = makeCanvas(S);
+  const cc = color.getContext('2d'), rc = rough.getContext('2d'), hc = height.getContext('2d');
+  cc.fillStyle = base; cc.fillRect(0, 0, S, S);
+  rc.fillStyle = 'rgb(0,235,0)'; rc.fillRect(0, 0, S, S);
+  hc.fillStyle = '#808080'; hc.fillRect(0, 0, S, S);
+  speckle(cc, S, 120, 6, 28, 0.08, true); speckle(cc, S, 120, 6, 28, 0.08, false);
+  speckle(hc, S, 220, 2, 9, 0.35, true); speckle(hc, S, 220, 2, 9, 0.35, false);
+  const mat = new THREE.MeshStandardMaterial({
+    map: toTexture(color, true, repeat, repeat),
+    roughnessMap: toTexture(rough, false, repeat, repeat),
+    normalMap: toTexture(heightToNormalCanvas(hc.canvas, 2.5), false, repeat, repeat),
+    roughness: 1.0, metalness: 0.0
+  });
+  return registerPBR(mat);
+}
+
+function plainPBR(hex, metalness, roughness) {
+  return registerPBR(new THREE.MeshStandardMaterial({
+    color: new THREE.Color(hex).convertSRGBToLinear(), metalness, roughness
+  }));
+}
+
+/* ---------- environment (HDRI) ---------- */
+let envMap = null;
+const params = { lx: -3.6, ly: 4.6, lz: 3.6, lightIntensity: 1.6 };
+
+function setEnvIntensity(v) {
+  allPBR.forEach(m => { m.envMapIntensity = v; });
+}
+
+function loadEnvironment() {
+  return new Promise((resolve, reject) => {
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    pmrem.compileEquirectangularShader();
+    new THREE.EXRLoader().setDataType(THREE.HalfFloatType).load(EXR_URL, (tex) => {
+      envMap = pmrem.fromEquirectangular(tex).texture;
+      scene.environment = envMap;
+      scene.background = envMap;
+      tex.dispose();
+      pmrem.dispose();
+      resolve();
+    }, undefined, reject);
+  });
+}
+
+/* ---------- floor, pedestal, display tiers ---------- */
+const floor = new THREE.Mesh(new THREE.CircleGeometry(40, 96), buildFloorMaterial());
+floor.rotation.x = -Math.PI / 2;
+floor.receiveShadow = true;
+scene.add(floor);
+const floorMesh = floor;
+
+const castersAndReceivers = [];
+function addSolid(mesh, cast = true, receive = true) {
+  mesh.castShadow = cast; mesh.receiveShadow = receive;
+  scene.add(mesh);
+  castersAndReceivers.push(mesh);
+  return mesh;
+}
+
+// pedestal: white marble disc + brass ring (dielectric next to metal)
+const PEDESTAL_H = 0.45;
+addSolid(new THREE.Mesh(new THREE.CylinderGeometry(1.45, 1.55, PEDESTAL_H, 64), plainPBR('#d9dcdf', 1.0, 0.16))).position.y = PEDESTAL_H / 2;
+const ring = addSolid(new THREE.Mesh(new THREE.TorusGeometry(1.47, 0.045, 16, 96), plainPBR('#d8a24a', 1.0, 0.18)), true, false);
+ring.rotation.x = Math.PI / 2; ring.position.y = PEDESTAL_H;
+
+/* ---------- buildings (two) ---------- */
+const topCap = concreteMaterial('#8d8a85', 2);
+function addTower(w, h, d, x, z, sideMat) {
+  const mats = [sideMat, sideMat, topCap, topCap, sideMat, sideMat];
+  const m = addSolid(new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mats));
+  m.position.set(x, h / 2, z);
+  return m;
+}
+addTower(3.2, 11, 3.2, -7.5, -7, curtainWall(3.2, 11, 3.2, ['#16283a', '#3a5f82']));   // glass tower
+addTower(5.2, 5.2, 4.2, 6.5, -8, brickMaterial());                                      // brick hall
+
+/* ---------- the cat ---------- */
+const catRoot = new THREE.Group();
+scene.add(catRoot);
+const catMats = {};          // by glTF material name
+const catOriginal = {};      // original values for reset
+let catLoaded = false;
+
+function loadCat() {
+  return new Promise((resolve, reject) => {
+    new THREE.GLTFLoader().load(GLB_URL, (gltf) => {
+      const cat = gltf.scene;
+      cat.traverse(o => {
+        if (!o.isMesh) return;
+        o.castShadow = true; o.receiveShadow = true;
+        const m = o.material;
+        m.side = THREE.DoubleSide;
+        if (!catMats[m.name]) {
+          catMats[m.name] = m;
+          catOriginal[m.name] = { color: m.color.clone(), metalness: m.metalness, roughness: m.roughness };
+          registerPBR(m);
+        }
+      });
+      // fit: ~2 units tall, feet on the pedestal
+      const box = new THREE.Box3().setFromObject(cat);
+      const size = box.getSize(new THREE.Vector3());
+      const s = 2.7 / size.y;
+      cat.scale.multiplyScalar(s);
+      box.setFromObject(cat);
+      const c = box.getCenter(new THREE.Vector3());
+      cat.position.x -= c.x;
+      cat.position.z -= c.z;
+      cat.position.y -= box.min.y;
+      cat.position.y += PEDESTAL_H;
+      catRoot.add(cat);
+      catLoaded = true;
+      resolve();
+    }, undefined, reject);
+  });
+}
+
+/* ---------- light + draggable marker ---------- */
+const light = new THREE.PointLight(0xfff1d6, params.lightIntensity, 0, 1);
+light.position.set(params.lx, params.ly, params.lz);
+light.castShadow = true;
+light.shadow.mapSize.set(1024, 1024);
+light.shadow.camera.near = 0.3;
+light.shadow.camera.far = 60;
+light.shadow.bias = -0.0006;
+light.shadow.normalBias = 0.03;
+scene.add(light);
+
+const marker = new THREE.Group();
+const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.17, 24, 16), new THREE.MeshBasicMaterial({ color: 0xffe08a, toneMapped: false }));
+marker.add(bulb);
+const glowCanvas = makeCanvas(128);
+{
+  const g = glowCanvas.getContext('2d');
+  const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64);
+  gr.addColorStop(0, 'rgba(255,224,138,0.85)');
+  gr.addColorStop(0.35, 'rgba(255,200,100,0.25)');
+  gr.addColorStop(1, 'rgba(255,200,100,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+}
+const glow = new THREE.Sprite(new THREE.SpriteMaterial({
+  map: new THREE.CanvasTexture(glowCanvas), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true, toneMapped: false
+}));
+glow.scale.set(1.5, 1.5, 1);
+marker.add(glow);
+const hit = new THREE.Mesh(new THREE.SphereGeometry(0.55, 12, 8), new THREE.MeshBasicMaterial({ visible: false }));
+marker.add(hit);
+scene.add(marker);
+marker.position.copy(light.position);
+
+function setLightPosition(v) {
+  v.y = Math.max(0.4, Math.min(v.y, 14));
+  const r = Math.hypot(v.x, v.z);
+  if (r > 18) { v.x *= 18 / r; v.z *= 18 / r; }
+  light.position.copy(v);
+  marker.position.copy(v);
+  params.lx = +v.x.toFixed(2); params.ly = +v.y.toFixed(2); params.lz = +v.z.toFixed(2);
+}
+
+/* mouse / touch interaction */
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+const dragPlane = new THREE.Plane();
+const hitPoint = new THREE.Vector3();
+let draggingLight = false;
+let dragOffset = new THREE.Vector3();
+
+function setPointer(e) {
+  const r = canvas.getBoundingClientRect();
+  pointer.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+  pointer.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+  raycaster.setFromCamera(pointer, camera);
+}
+
+function overMarker(clientX, clientY) {
+  setPointer({ clientX, clientY });
+  return marker.visible && raycaster.intersectObject(hit).length > 0;
+}
+canvas.addEventListener('pointerdown', (e) => {
+  if (!overMarker(e.clientX, e.clientY)) return;
+  e.stopImmediatePropagation();               // keep OrbitControls out of this drag
+  draggingLight = true;
+  canvas.classList.add('dragging-light');
+  canvas.setPointerCapture(e.pointerId);
+  const camDir = camera.getWorldDirection(new THREE.Vector3());
+  dragPlane.setFromNormalAndCoplanarPoint(camDir, marker.position);
+  raycaster.ray.intersectPlane(dragPlane, hitPoint);
+  dragOffset.copy(marker.position).sub(hitPoint);
+  e.preventDefault();
+}, true);
+canvas.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1 && overMarker(e.touches[0].clientX, e.touches[0].clientY)) e.stopImmediatePropagation();
+}, { capture: true, passive: true });
+canvas.addEventListener('pointermove', (e) => {
+  setPointer(e);
+  if (draggingLight) {
+    if (raycaster.ray.intersectPlane(dragPlane, hitPoint)) { setLightPosition(hitPoint.clone().add(dragOffset)); syncLightUI(); }
+  } else if (marker.visible) {
+    canvas.style.cursor = raycaster.intersectObject(hit).length ? 'grab' : '';
+  }
 });
-window.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowUp') { upPressed = true; e.preventDefault(); }
-  if (e.key === 'ArrowDown') { downPressed = true; e.preventDefault(); }
-  if (e.key === 'ArrowLeft') { leftPressed = true; e.preventDefault(); }
-  if (e.key === 'ArrowRight') { rightPressed = true; e.preventDefault(); }
-});
-window.addEventListener('keyup', (e) => {
-  if (e.key === 'ArrowUp') upPressed = false;
-  if (e.key === 'ArrowDown') downPressed = false;
-  if (e.key === 'ArrowLeft') leftPressed = false;
-  if (e.key === 'ArrowRight') rightPressed = false;
+function endDrag(e) {
+  if (!draggingLight) return;
+  draggingLight = false;
+  canvas.classList.remove('dragging-light');
+  try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+}
+canvas.addEventListener('pointerup', endDrag);
+canvas.addEventListener('pointercancel', endDrag);
+
+// double-click anywhere on the floor: drop the light 2.2 units above that point
+canvas.addEventListener('dblclick', (e) => {
+  setPointer(e);
+  const h = raycaster.intersectObject(floorMesh)[0];
+  if (h) { setLightPosition(new THREE.Vector3(h.point.x, 2.2, h.point.z)); syncLightUI(); }
 });
 
-let invaderDegree = 0;
-const invaderRotSpeed = 1;
-let invaderPulse = 0;
+/* ---------- UI (sliders + keyboard) ---------- */
+const $ = (id) => document.getElementById(id);
+const bodyMats = () => ['cat_brown', 'cat_white'].map(n => catMats[n]).filter(Boolean);
+function syncLightUI() {
+  [['X', 'lx'], ['Y', 'ly'], ['Z', 'lz']].forEach(([k, p]) => { $('s' + k).value = params[p]; $('o' + k).textContent = (+params[p]).toFixed(1); });
+}
+['X', 'Y', 'Z'].forEach(k => $('s' + k).addEventListener('input', () => {
+  params.orbit = false;
+  setLightPosition(new THREE.Vector3(+$('sX').value, +$('sY').value, +$('sZ').value));
+  syncLightUI();
+}));
+function bindMat(id, outId, prop) {
+  $(id).addEventListener('input', () => {
+    const v = +$(id).value; $(outId).textContent = v.toFixed(2);
+    bodyMats().forEach(m => { m[prop] = v; });
+  });
+}
+bindMat('sM', 'oM', 'metalness');
+bindMat('sR', 'oR', 'roughness');
+const keys = {};
+window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
+window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+function keyMove(dt) {
+  const v = light.position.clone(), s = 5 * dt;
+  if (keys['a']) v.x -= s; if (keys['d']) v.x += s;
+  if (keys['w']) v.z -= s; if (keys['s']) v.z += s;
+  if (keys['q']) v.y -= s; if (keys['e']) v.y += s;
+  if (!v.equals(light.position)) { setLightPosition(v); syncLightUI(); }
+}
+function updateBackground() {}
 
-const chibiCast = [
-  { sprite: smileSprite24Bit,    x:100, y:16,  rotSpeed:2.0,  pulseSpeed:0.08,  degree:0, pulse:0.0 },
-  { sprite: sheepCookieSprite,   x:100, y:183, rotSpeed:0.7,  pulseSpeed:0.05,  degree:0, pulse:1.0 },
-  { sprite: chibiCatSprite,      x:20,  y:20,  rotSpeed:1.5,  pulseSpeed:0.07,  degree:0, pulse:2.0 },
-  { sprite: chibiBearSprite,     x:180, y:20,  rotSpeed:-1.2, pulseSpeed:0.06,  degree:0, pulse:3.0 },
-  { sprite: chibiBunnySprite,    x:14,  y:100, rotSpeed:1.8,  pulseSpeed:0.09,  degree:0, pulse:4.0 },
-  { sprite: chibiPandaSprite,    x:186, y:100, rotSpeed:-1.6, pulseSpeed:0.055, degree:0, pulse:5.0 },
-  { sprite: chibiFoxSprite,      x:20,  y:180, rotSpeed:1.3,  pulseSpeed:0.075, degree:0, pulse:6.0 },
-  { sprite: chibiDinoSprite,     x:180, y:180, rotSpeed:-1.4, pulseSpeed:0.065, degree:0, pulse:7.0 },
-  { sprite: chibiPenguinSprite,  x:55,  y:60,  rotSpeed:1.0,  pulseSpeed:0.045, degree:0, pulse:8.0 },
-  { sprite: chibiUnicornSprite,  x:145, y:140, rotSpeed:-1.0, pulseSpeed:0.05,  degree:0, pulse:9.0 },
-];
-
+/* ---------- loop ---------- */
+const clock = new THREE.Clock();
 function animate() {
-  drawRectFilled(0, 0, canvas.width - 1, canvas.height - 1, 255, 255, 255);
-  if (leftPressed) degree -= rotateSpeed;
-  if (rightPressed) degree += rotateSpeed;
-  degree = ((degree % 360) + 360) % 360;
-  if (upPressed) targetScale = Math.min(maxScale, targetScale + scaleStep);
-  if (downPressed) targetScale = Math.max(minScale, targetScale - scaleStep);
-  scale += (targetScale - scale) * 0.2;
-
-  for (const c of chibiCast) {
-    c.degree = (c.degree + c.rotSpeed) % 360;
-    c.pulse += c.pulseSpeed;
-    const s = 1 + 0.18 * Math.sin(c.pulse);
-    drawSprite24BitRotateScale(c.sprite, c.x, c.y, c.degree, s, s);
-  }
-  drawSprite24BitRotateScale(monkeySprite24Bit, monkeyX, monkeyY, degree, scale, scale);
-
-  // เอเลี่ยน 1-bit mask หมุนเองอัตโนมัติ + เต้นขนาดเบาๆ (สีทองเข้ากับธีมครีม)
-  invaderDegree = (invaderDegree + invaderRotSpeed) % 360;
-  invaderPulse += 0.05;
-  const invaderScale = 0.8 + 0.15 * Math.sin(invaderPulse);
-  drawSpriteRotateScale(spaceInvaderSprite, 100, 100, invaderDegree, invaderScale, invaderScale, 201, 138, 46);
-
-  ctx.putImageData(imageData, 0, 0);
   requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  keyMove(dt);
+  controls.update();
+  renderer.render(scene, camera);
 }
-animate();
-</script>
 
-<!-- Mini Paint script, isolated in its own IIFE so it never collides with the raster demo above -->
-<script>
-(function(){
-  const canvas = document.getElementById('paintCanvas');
-  const ctx = canvas.getContext('2d');
-  const imageData = ctx.createImageData(canvas.width, canvas.height);
-  const pixels = imageData.data;
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
-  function fillBackground(r, g, b) {
-    for (let i = 0; i < pixels.length; i += 4) {
-      pixels[i] = r; pixels[i + 1] = g; pixels[i + 2] = b; pixels[i + 3] = 255;
-    }
+/* ---------- boot ---------- */
+(async function boot() {
+  try {
+    await loadEnvironment();
+  } catch (err) {
+    console.error('HDRI failed to load (check rathaus_1k.exr is next to index.html)', err);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x444444, 0.8));
   }
-  fillBackground(255, 255, 255);
-  ctx.putImageData(imageData, 0, 0);
-
-  function putPixel(x, y, r, g, b, a = 255) {
-    x = Math.round(x); y = Math.round(y);
-    if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) return;
-    const idx = (y * canvas.width + x) * 4;
-    pixels[idx] = r; pixels[idx + 1] = g; pixels[idx + 2] = b; pixels[idx + 3] = a;
-  }
-
-  function linePoints(x0, y0, x1, y1) {
-    x0 = Math.round(x0); y0 = Math.round(y0);
-    x1 = Math.round(x1); y1 = Math.round(y1);
-    const points = [];
-    const dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
-    const dy = -Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
-    let err = dx + dy;
-    while (true) {
-      points.push({ x: x0, y: y0 });
-      if (x0 === x1 && y0 === y1) break;
-      const e2 = 2 * err;
-      if (e2 >= dy) { err += dy; x0 += sx; }
-      if (e2 <= dx) { err += dx; y0 += sy; }
-    }
-    return points;
-  }
-
-  function stampBrush(cx, cy, r, g, b, thickness) {
-    const radius = Math.max(0, Math.floor(thickness / 2));
-    if (radius === 0) { putPixel(cx, cy, r, g, b); return; }
-    const rr = radius * radius + radius;
-    for (let y = -radius; y <= radius; y++) {
-      for (let x = -radius; x <= radius; x++) {
-        if (x * x + y * y <= rr) putPixel(cx + x, cy + y, r, g, b);
-      }
-    }
-  }
-
-  function drawThickLine(x1, y1, x2, y2, r, g, b, thickness) {
-    const pts = linePoints(x1, y1, x2, y2);
-    for (const p of pts) stampBrush(p.x, p.y, r, g, b, thickness);
-  }
-
-  function drawThickRectOutline(x1, y1, x2, y2, r, g, b, thickness) {
-    drawThickLine(x1, y1, x2, y1, r, g, b, thickness);
-    drawThickLine(x2, y1, x2, y2, r, g, b, thickness);
-    drawThickLine(x2, y2, x1, y2, r, g, b, thickness);
-    drawThickLine(x1, y2, x1, y1, r, g, b, thickness);
-  }
-
-  function drawThickEllipseOutline(cx, cy, rx, ry, r, g, b, thickness) {
-    rx = Math.abs(rx); ry = Math.abs(ry);
-    const steps = Math.max(36, Math.floor((rx + ry) * 4));
-    for (let i = 0; i <= steps; i++) {
-      const theta = (i / steps) * Math.PI * 2;
-      const x = cx + rx * Math.cos(theta);
-      const y = cy + ry * Math.sin(theta);
-      stampBrush(Math.round(x), Math.round(y), r, g, b, thickness);
-    }
-  }
-
-  function hexToRgb(hex) {
-    const n = parseInt(hex.slice(1), 16);
-    return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
-  }
-
-  let currentTool = 'pencil';
-  let currentColor = '#DC2626';
-  const thicknessSlider = document.getElementById('p-thickness');
-  const thicknessValueLabel = document.getElementById('p-thicknessValue');
-
-  thicknessSlider.addEventListener('input', () => {
-    thicknessValueLabel.textContent = thicknessSlider.value;
-  });
-
-  document.querySelectorAll('.p-tool-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.p-tool-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentTool = btn.dataset.ptool;
-    });
-  });
-
-  document.querySelectorAll('.p-color-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.p-color-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentColor = btn.dataset.pcolor;
-    });
-  });
-
-  document.getElementById('p-clearBtn').addEventListener('click', () => {
-    fillBackground(255, 255, 255);
-    ctx.putImageData(imageData, 0, 0);
-  });
-
-  document.getElementById('p-saveBtn').addEventListener('click', () => {
-    const link = document.createElement('a');
-    link.download = 'my_paint.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-  });
-
-  let isDrawing = false;
-  let startX = 0, startY = 0;
-  let prevX = 0, prevY = 0;
-  let snapshot = null;
-
-  function getMousePos(event) {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    return {
-      x: Math.floor((event.clientX - rect.left) * scaleX),
-      y: Math.floor((event.clientY - rect.top) * scaleY)
-    };
-  }
-
-  function getActiveColor() {
-    if (currentTool === 'eraser') return { r: 255, g: 255, b: 255 };
-    return hexToRgb(currentColor);
-  }
-
-  canvas.addEventListener('mousedown', (event) => {
-    isDrawing = true;
-    const { x, y } = getMousePos(event);
-    startX = prevX = x;
-    startY = prevY = y;
-
-    if (currentTool === 'pencil' || currentTool === 'eraser') {
-      const { r, g, b } = getActiveColor();
-      stampBrush(x, y, r, g, b, thicknessSlider.value);
-      ctx.putImageData(imageData, 0, 0);
-    } else {
-      snapshot = new Uint8ClampedArray(pixels);
-    }
-  });
-
-  canvas.addEventListener('mousemove', (event) => {
-    if (!isDrawing) return;
-    const { x, y } = getMousePos(event);
-    const { r, g, b } = getActiveColor();
-    const thickness = thicknessSlider.value;
-
-    if (currentTool === 'pencil' || currentTool === 'eraser') {
-      drawThickLine(prevX, prevY, x, y, r, g, b, thickness);
-      prevX = x; prevY = y;
-    } else {
-      pixels.set(snapshot);
-      if (currentTool === 'line') {
-        drawThickLine(startX, startY, x, y, r, g, b, thickness);
-      } else if (currentTool === 'rect') {
-        drawThickRectOutline(startX, startY, x, y, r, g, b, thickness);
-      } else if (currentTool === 'ellipse') {
-        const cx = (startX + x) / 2;
-        const cy = (startY + y) / 2;
-        const rx = Math.abs(x - startX) / 2;
-        const ry = Math.abs(y - startY) / 2;
-        drawThickEllipseOutline(cx, cy, rx, ry, r, g, b, thickness);
-      }
-    }
-    ctx.putImageData(imageData, 0, 0);
-  });
-
-  function stopDrawing() { isDrawing = false; snapshot = null; }
-  canvas.addEventListener('mouseup', stopDrawing);
-  canvas.addEventListener('mouseleave', stopDrawing);
+  try { await loadCat(); } catch (err) { console.error('Cat model failed to load', err); }
+  setEnvIntensity(1.0);
+  const t = bodyMats()[0];
+  if (t) { $('sM').value = t.metalness; $('sR').value = t.roughness; $('oM').textContent = t.metalness.toFixed(2); $('oR').textContent = t.roughness.toFixed(2); }
+  syncLightUI();
+  animate();
+  document.getElementById('loading').classList.add('done');
 })();
 </script>
-
 </body>
 </html>
